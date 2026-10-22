@@ -1,0 +1,3539 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-pt-28 md:scroll-pt-36">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Slakoth Line Binder</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#161f1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Slakoth Binder">
+  <!-- Tailwind CSS CDN -->
+  <script>
+    try { const t = localStorage.getItem('slakoth-line-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { slate: {50:'rgb(var(--n50) / <alpha-value>)',100:'rgb(var(--n100) / <alpha-value>)',200:'rgb(var(--n200) / <alpha-value>)',300:'rgb(var(--n300) / <alpha-value>)',400:'rgb(var(--n400) / <alpha-value>)',500:'rgb(var(--n500) / <alpha-value>)',600:'rgb(var(--n600) / <alpha-value>)',700:'rgb(var(--n700) / <alpha-value>)',800:'rgb(var(--n800) / <alpha-value>)',900:'rgb(var(--n900) / <alpha-value>)',950:'rgb(var(--n950) / <alpha-value>)'},
+        amber: {200:'rgb(var(--a200) / <alpha-value>)',300:'rgb(var(--a300) / <alpha-value>)',400:'rgb(var(--a400) / <alpha-value>)',500:'rgb(var(--a500) / <alpha-value>)',600:'rgb(var(--a600) / <alpha-value>)'},
+        emerald: {300:'rgb(var(--g300) / <alpha-value>)',400:'rgb(var(--g400) / <alpha-value>)',500:'rgb(var(--g500) / <alpha-value>)',600:'rgb(var(--g600) / <alpha-value>)'},
+        blue: {400:'rgb(var(--t400) / <alpha-value>)',500:'rgb(var(--t500) / <alpha-value>)'},
+        purple: {300:'rgb(var(--p300) / <alpha-value>)',400:'rgb(var(--p400) / <alpha-value>)',500:'rgb(var(--p500) / <alpha-value>)'},
+        white: 'rgb(var(--ink) / <alpha-value>)' },
+      fontFamily: { sans: ['"Instrument Sans"', 'system-ui', 'sans-serif'], mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'] }
+    } } };
+  </script>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Canopy binder: moss-dark binder leather, clear sleeve pockets, fur-tan accent, Slakoth pink highlight */
+    :root {
+      color-scheme: dark;
+      --n50: 247 249 244; --n100: 236 241 233; --n200: 215 225 214; --n300: 186 201 189; --n400: 146 164 151;
+      --n500: 106 124 111; --n600: 73 90 79; --n700: 50 65 56; --n800: 34 46 39; --n900: 22 31 26; --n950: 13 19 16;
+      --ink: 255 252 244;
+      --a200: 255 224 192; --a300: 248 198 150; --a400: 238 172 114; --a500: 226 148 86; --a600: 196 119 60;
+      --g300: 176 224 185; --g400: 134 205 151; --g500: 98 182 122; --g600: 70 148 94;
+      --t400: 112 198 186; --t500: 74 170 158;
+      --p300: 250 190 204; --p400: 242 152 177; --p500: 226 112 146;
+      --sheen: 255 255 255; --hole: 6 10 8;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        color-scheme: light;
+        --n50: 15 21 17; --n100: 25 34 28; --n200: 40 52 44; --n300: 58 72 62; --n400: 84 99 89;
+        --n500: 116 130 120; --n600: 170 182 168; --n700: 205 214 201; --n800: 228 234 223; --n900: 252 253 249; --n950: 238 242 233;
+        --ink: 20 28 23;
+        --a200: 132 66 22; --a300: 150 78 28; --a400: 168 88 34; --a500: 176 94 38; --a600: 150 78 28;
+        --g300: 30 104 58; --g400: 38 122 70; --g500: 50 146 86; --g600: 34 110 62;
+        --t400: 24 124 112; --t500: 28 140 128;
+        --p300: 168 58 98; --p400: 186 70 112; --p500: 204 86 128;
+        --sheen: 255 255 255; --hole: 214 222 210;
+      }
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --n50: 15 21 17; --n100: 25 34 28; --n200: 40 52 44; --n300: 58 72 62; --n400: 84 99 89;
+      --n500: 116 130 120; --n600: 170 182 168; --n700: 205 214 201; --n800: 228 234 223; --n900: 252 253 249; --n950: 238 242 233;
+      --ink: 20 28 23;
+      --a200: 132 66 22; --a300: 150 78 28; --a400: 168 88 34; --a500: 176 94 38; --a600: 150 78 28;
+      --g300: 30 104 58; --g400: 38 122 70; --g500: 50 146 86; --g600: 34 110 62;
+      --t400: 24 124 112; --t500: 28 140 128;
+      --p300: 168 58 98; --p400: 186 70 112; --p500: 204 86 128;
+      --sheen: 255 255 255; --hole: 214 222 210;
+    }
+
+    body {
+      font-family: 'Instrument Sans', system-ui, sans-serif;
+      background-color: rgb(var(--n950));
+      background-image:
+        radial-gradient(1100px 520px at -10% -15%, rgb(var(--g500) / .13), transparent 70%),
+        radial-gradient(900px 480px at 110% -5%, rgb(var(--a500) / .10), transparent 70%),
+        radial-gradient(700px 600px at 50% 120%, rgb(var(--p500) / .06), transparent 70%);
+      background-attachment: fixed;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Bricolage Grotesque', 'Instrument Sans', system-ui, sans-serif;
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+    #set-title { font-weight: 800; letter-spacing: -0.02em; }
+    .font-mono, [class*="font-mono"] { font-variant-numeric: tabular-nums; }
+
+    /* Scrollbars follow the theme */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgb(var(--n950)); }
+    ::-webkit-scrollbar-thumb { background: rgb(var(--n700)); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgb(var(--n600)); }
+
+    /* Binder page: punched-hole strip on the left edge, like a real 9-pocket sheet */
+    .binder-page {
+      padding-left: 2.1rem !important;
+      background-image: linear-gradient(160deg, rgb(var(--sheen) / .035), transparent 38%);
+    }
+    .binder-page::before {
+      content: "";
+      position: absolute; top: 0; bottom: 0; left: 0; width: 1.45rem;
+      border-right: 1px dashed rgb(var(--n700));
+      background:
+        radial-gradient(circle at 50% 16%, rgb(var(--hole)) 0 .32rem, rgb(var(--n700)) .32rem .4rem, transparent .42rem),
+        radial-gradient(circle at 50% 50%, rgb(var(--hole)) 0 .32rem, rgb(var(--n700)) .32rem .4rem, transparent .42rem),
+        radial-gradient(circle at 50% 84%, rgb(var(--hole)) 0 .32rem, rgb(var(--n700)) .32rem .4rem, transparent .42rem);
+      pointer-events: none;
+    }
+    @media (min-width: 640px) {
+      .binder-page { padding-left: 3rem !important; }
+      .binder-page::before { width: 1.9rem; }
+    }
+
+    /* Pockets: clear sleeve with a top lip and a soft diagonal sheen */
+    .pocket { border-radius: .7rem !important; }
+    .pocket::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1;
+      box-shadow: inset 0 1px 0 rgb(var(--sheen) / .10), inset 0 0 0 1px rgb(var(--sheen) / .02);
+    }
+    .pocket::after { z-index: 1; }
+    .pocket > * { position: relative; z-index: 2; }
+    .pocket-owned { box-shadow: 0 0 0 1px rgb(var(--g500) / .35), 0 8px 24px -14px rgb(var(--g500) / .55); }
+    .pocket-empty {
+      background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgb(var(--n700) / .35) 9px 10px) !important;
+    }
+
+    /* Swipe mode: one binder page per screen, snap between them */
+    #binder-container.swipe-mode {
+      display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain; padding-bottom: 4.5rem; scrollbar-width: none;
+    }
+    #binder-container.swipe-mode::-webkit-scrollbar { display: none; }
+    #binder-container.swipe-mode > * { margin-top: 0 !important; flex: 0 0 100%; min-width: 0; scroll-snap-align: start; }
+    #swipe-pager:not(.hidden) { display: flex; }
+
+    /* Every version of a card owned: gold ring */
+    .pocket-complete { box-shadow: 0 0 0 1.5px rgb(var(--a400) / .85), 0 10px 28px -14px rgb(var(--a400) / .7) !important; border-color: rgb(var(--a400) / .6) !important; }
+    .complete-chip { background: linear-gradient(135deg, rgb(var(--a300)), rgb(var(--a500))); color: rgb(var(--n950)); }
+
+    /* Celebration toast */
+    #celebrate { transition: opacity .25s ease, transform .25s ease; }
+    #celebrate.show { opacity: 1; transform: translate(-50%, 0); }
+    #celebrate.hide { opacity: 0; transform: translate(-50%, -12px); pointer-events: none; }
+    .burst i { position: absolute; width: 6px; height: 6px; border-radius: 2px; left: 50%; top: 50%; animation: burst .9s ease-out forwards; }
+    @keyframes burst { to { transform: translate(var(--dx), var(--dy)) rotate(220deg); opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .burst { display: none; } #celebrate { transition: none; } }
+
+    /* Keyboard focus stays visible everywhere */
+    button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid rgb(var(--a400)); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .foil-effect::after { animation: none; }
+      * { scroll-behavior: auto !important; transition-duration: 0s !important; }
+    }
+
+    /* Hide scrollbar for horizontal chip containers */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Foil shimmer effect for Reverse Holo / IR cards */
+    .foil-effect {
+      position: relative;
+      overflow: hidden;
+    }
+    .foil-effect::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.03) 40%,
+        rgba(255, 215, 0, 0.15) 50%,
+        rgba(255, 255, 255, 0.03) 60%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      pointer-events: none;
+      animation: shimmer 6s infinite linear;
+    }
+    @keyframes shimmer {
+      0% { transform: translateY(-30%) rotate(25deg); }
+      100% { transform: translateY(30%) rotate(25deg); }
+    }
+    /* Safe Area Notch Handling */
+    .safe-top {
+      padding-top: max(0.5rem, env(safe-area-inset-top));
+    }
+    /* Foil shimmer tuned to the warm accent */
+    /* Foil: a soft, still tint instead of a moving band */
+    .foil-effect::after {
+      top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important;
+      transform: none !important; animation: none !important; border-radius: inherit;
+      background: linear-gradient(135deg, rgb(var(--a400) / .07) 0%, transparent 38%, transparent 62%, rgb(var(--p400) / .06) 100%) !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Sticky Mobile-Optimized Header Bar -->
+  <header class="sticky top-0 z-40 bg-slate-900/85 backdrop-blur-xl border-b border-slate-800 shadow-2xl safe-top transition-all" style="box-shadow: inset 0 -1px 0 rgb(var(--a500) / .25), 0 18px 40px -24px rgb(0 0 0 / .6)">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 md:py-3">
+      
+      <!-- Compact Top Row: Title + Progress Summary -->
+      <div class="flex items-center justify-between gap-2">
+        
+        <!-- Brand Title & Tag -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <div class="hidden sm:flex w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 items-center justify-center text-amber-400 font-bold text-lg sm:text-xl shadow-inner shrink-0">
+            🦥
+          </div>
+          <div id="set-switch-wrap" class="relative min-w-0">
+            <h1 class="leading-tight">
+              <button id="set-switch-btn" onclick="toggleSetMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="set-menu"
+                class="text-base sm:text-xl font-bold tracking-tight text-white flex items-center gap-1 sm:gap-2 rounded-lg -mx-1 px-1 hover:bg-slate-800/80 focus-visible:ring-2 focus-visible:ring-amber-500 outline-none transition">
+                <span id="set-title" class="truncate">Slakoth Master Set</span>
+                <i data-lucide="chevrons-up-down" class="w-4 h-4 text-amber-400 shrink-0"></i>
+                <span id="set-count-pill" class="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-slate-800 text-amber-400 font-mono border border-slate-700">55 Cards</span>
+              </button>
+            </h1>
+            <p class="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1.5">
+              <span>Oct 22, 2026</span> • <span>@Ian</span> • <span id="page-sides" class="text-emerald-400 font-medium">7 Page Sides</span>
+            </p>
+            <div id="set-menu" role="menu" class="hidden absolute left-0 top-full mt-1 z-50 w-[min(18rem,calc(100vw-2rem))] bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-1.5"></div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+        <!-- Theme toggle: Auto / Light / Dark -->
+        <div id="tools-wrap" class="relative">
+          <button id="tools-btn" onclick="toggleToolsMenu()" aria-haspopup="true" aria-expanded="false" aria-controls="tools-menu" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-950/90 border border-slate-800 hover:border-amber-500/60 text-amber-300 flex items-center justify-center shrink-0 transition" aria-label="Tools" title="Tools">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </button>
+          <div id="tools-menu" role="menu" class="hidden absolute right-0 top-full mt-1 z-50 w-60 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-1.5"></div>
+        </div>
+        <button id="theme-btn" onclick="cycleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-950/90 border border-slate-800 hover:border-amber-500/60 text-amber-300 flex items-center justify-center shrink-0 transition" aria-label="Theme: Auto" title="Theme: Auto">
+          <i data-lucide="sun-moon" class="w-4 h-4"></i>
+        </button>
+        <!-- Progress Indicator -->
+        <div class="bg-slate-950/90 px-2.5 py-1.5 sm:p-2.5 rounded-xl border border-slate-800 flex flex-col justify-center min-w-[112px] sm:min-w-[240px]">
+          <div class="flex justify-between items-center text-[10px] sm:text-xs mb-1">
+            <span class="text-slate-400 font-medium hidden sm:flex items-center gap-1">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Core Progress
+            </span>
+            <span class="font-bold text-emerald-400 font-mono text-xs sm:text-xs ml-auto sm:ml-0">
+              <span id="core-owned-count">24</span>/<span id="core-total">48</span> <span class="text-slate-400 font-normal">(<span id="core-percent">50</span>%)</span>
+            </span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 sm:h-2 overflow-hidden border border-slate-700">
+            <div id="core-progress-bar" class="bg-gradient-to-r from-amber-500 to-emerald-400 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
+          </div>
+        </div>
+        </div>
+
+      </div>
+
+      <!-- Card Search -->
+      <div id="search-wrap" class="relative mt-2">
+        <label for="card-search" class="sr-only">Search cards by set or number</label>
+        <div class="flex items-center gap-2 bg-slate-950/90 border border-slate-700 focus-within:border-amber-500/70 rounded-xl px-3 py-1.5 sm:py-2 transition">
+          <i data-lucide="search" class="w-4 h-4 text-slate-500 shrink-0"></i>
+          <input id="card-search" type="search" autocomplete="off" enterkeyhint="search"
+            placeholder="Search all 3 binders (145, Platinum, Slaking ex, p3)"
+            class="flex-1 min-w-0 bg-transparent text-base sm:text-sm text-slate-100 placeholder:text-slate-500 outline-none [&::-webkit-search-cancel-button]:hidden"
+            oninput="onSearch(this.value)" onkeydown="onSearchKey(event)" onfocus="onSearch(this.value)">
+          <button id="search-clear" onclick="clearSearch()" class="hidden text-slate-400 hover:text-white p-0.5 rounded focus-visible:ring-2 focus-visible:ring-amber-500" aria-label="Clear search">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div id="search-results" class="hidden absolute left-0 right-0 mt-1 z-50 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-h-[60vh] overflow-y-auto"></div>
+      </div>
+
+      <!-- Scrollable Navigation Controls (Filters & Page Jump Chips) -->
+      <div class="mt-2 pt-2 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        
+        <!-- Filter Tabs (Horizontal Scroll on Mobile) -->
+        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs -mx-1 px-1">
+          <button id="filter-all" onclick="setFilter('all')" class="filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap bg-amber-500 text-slate-950 shadow transition shrink-0">All (<span id="count-all">55</span>)</button>
+          <button id="filter-owned" onclick="setFilter('owned')" class="filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0">Owned (<span id="count-owned">24</span>)</button>
+          <button id="filter-needed" onclick="setFilter('needed')" class="filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0">Needed (<span id="count-needed">31</span>)</button>
+          <button id="filter-core" onclick="setFilter('core')" class="filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0">Core Set (P1-<span id="core-pages">6</span>)</button>
+          <button id="filter-1st" onclick="setFilter('1st')" class="filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0">1st Ed (P<span id="first-page">7</span>)</button>
+        </div>
+
+        <!-- Quick Page Jump Toolbar -->
+        <div class="flex items-center justify-between sm:justify-end space-x-1 text-xs pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-800/50">
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mr-1 shrink-0">Page Jump:</span>
+          <div id="page-jump" class="flex items-center space-x-1 overflow-x-auto no-scrollbar">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-10">
+
+    <!-- Rules & Corrections Information Banner -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-3.5 sm:p-5 shadow-lg relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+        <div class="flex items-start space-x-2.5 bg-slate-950/60 p-2.5 sm:p-3 rounded-xl border border-slate-800/80">
+          <div class="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg shrink-0 mt-0.5">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-200">9-Pocket Row Layout</h4>
+            <p id="banner-layout" class="text-slate-400 text-[11px] leading-tight mt-0.5">Left = EN Normal • Center = EN Reverse Holo • Right = Japanese Copy.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-2.5 bg-slate-950/60 p-2.5 sm:p-3 rounded-xl border border-slate-800/80">
+          <div class="p-1.5 bg-amber-500/10 text-amber-400 rounded-lg shrink-0 mt-0.5">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 id="banner-note-title" class="font-bold text-slate-200">Checklist Corrections</h4>
+            <p id="banner-note" class="text-slate-400 text-[11px] leading-tight mt-0.5">Added XY Trainer Kit #15 & #26 (Page 3). The missing #3 was a numbering slip, not a missing card.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-2.5 bg-slate-950/60 p-2.5 sm:p-3 rounded-xl border border-slate-800/80">
+          <div class="p-1.5 bg-purple-500/10 text-purple-400 rounded-lg shrink-0 mt-0.5">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-200">Optional 1st Editions</h4>
+            <p id="banner-first" class="text-slate-400 text-[11px] leading-tight mt-0.5">Page 7 holds the 7 Japanese 1st Edition prints (2001-2016 era). Tracked separately.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Binder Pages Scroll Area -->
+    <div id="binder-container" class="space-y-8 sm:space-y-12">
+      <!-- Binder Pages generated dynamically by JS -->
+    </div>
+
+  </main>
+
+  <!-- Card Details Modal Inspector -->
+  <div id="card-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl relative my-auto my-6 transform transition-all">
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex flex-col items-center text-center">
+        <!-- Modal Card Artwork Preview -->
+        <div id="modal-card-wrapper" class="w-40 h-56 sm:w-48 sm:h-64 rounded-xl border-2 border-slate-700 overflow-hidden shadow-2xl mb-3 relative bg-slate-950 flex items-center justify-center">
+          <img id="modal-image" src="" alt="Card Artwork" class="w-full h-full object-contain">
+        </div>
+
+        <!-- Card Meta Header -->
+        <h3 id="modal-title" class="text-lg sm:text-xl font-bold text-white font-heading">Set Title</h3>
+        <p id="modal-subtitle" class="text-xs text-amber-400 font-mono mt-0.5">Set Details & Number</p>
+
+        <!-- Status Pill -->
+        <div id="modal-status" class="mt-2.5 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Technical & Collector Notes -->
+        <div class="mt-4 w-full text-left bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs space-y-2">
+          <div class="border-b border-slate-800/80 pb-2">
+            <div class="flex justify-between items-baseline">
+              <span class="text-slate-400">Market Price (NM):</span>
+              <span id="modal-price" class="font-mono font-bold text-amber-300 text-sm tabular-nums">--</span>
+            </div>
+            <p id="modal-price-src" class="text-[10px] text-slate-500 text-right mt-0.5"></p>
+            <div class="flex gap-2 mt-2">
+              <a id="modal-ebay" href="#" target="_blank" rel="noopener" class="flex-1 text-center py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium">eBay sold listings</a>
+              <a id="modal-tcgp" href="#" target="_blank" rel="noopener" class="flex-1 text-center py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium">TCGplayer</a>
+            </div>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+            <span class="text-slate-400">Finish:</span>
+            <span id="modal-finish" class="font-medium text-slate-200">Reverse Holo</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+            <span class="text-slate-400">Binder Position:</span>
+            <span id="modal-position" class="font-mono text-slate-200">Page 1 • Row 1 • Left</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-1.5">
+            <span class="text-slate-400">Release Era:</span>
+            <span id="modal-era" class="text-slate-200">EX Era (2003)</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block mb-1">Curator Notes:</span>
+            <p id="modal-notes" class="text-slate-300 italic bg-slate-900/60 p-2 rounded border border-slate-800/60 text-[11px] leading-relaxed">
+              Note details here...
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick compare with the other cards in this pocket row -->
+        <div id="modal-compare-quick" class="mt-3 w-full"></div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 w-full flex gap-2">
+          <button onclick="startCompare()" class="py-2.5 px-3 rounded-xl font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 transition flex items-center justify-center gap-1.5">
+            <i data-lucide="columns-2" class="w-4 h-4"></i> Compare
+          </button>
+          <button id="modal-toggle-btn" onclick="toggleCurrentCardOwned()" class="flex-1 py-2.5 rounded-xl font-semibold text-xs bg-emerald-500 hover:bg-emerald-600 text-slate-950 transition shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Toggle Owned Status
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-up panel used by every tool -->
+  <div id="sheet" class="hidden fixed inset-0 z-[60]" aria-hidden="true">
+    <button class="absolute inset-0 w-full h-full bg-slate-950/75 backdrop-blur-sm cursor-default" onclick="closeSheet()" aria-label="Close panel" tabindex="-1"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="sheet-title" class="absolute inset-x-0 bottom-0 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:max-w-lg max-h-[88vh] flex flex-col bg-slate-900 border border-slate-700 rounded-t-3xl sm:rounded-2xl shadow-2xl" style="padding-bottom: env(safe-area-inset-bottom, 0px)">
+      <div class="sm:hidden mx-auto mt-2 h-1 w-10 rounded-full bg-slate-700"></div>
+      <div class="flex items-center justify-between gap-3 px-4 sm:px-5 pt-3 pb-2 border-b border-slate-800">
+        <h2 id="sheet-title" class="text-base sm:text-lg font-bold text-white">Tools</h2>
+        <button onclick="closeSheet()" class="text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-full transition" aria-label="Close"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div id="sheet-body" class="overflow-y-auto px-4 sm:px-5 py-4 text-sm"></div>
+    </div>
+  </div>
+
+  <!-- Celebration toast -->
+  <div id="celebrate" class="hide fixed left-1/2 z-[70] w-[min(22rem,calc(100vw-2rem))]" style="top: calc(0.75rem + env(safe-area-inset-top, 0px))" role="status" aria-live="polite">
+    <div class="relative overflow-visible rounded-2xl border border-amber-500/60 bg-slate-900 shadow-2xl px-4 py-3 flex items-center gap-3">
+      <div id="celebrate-burst" class="burst absolute inset-0 pointer-events-none"></div>
+      <div class="w-9 h-9 rounded-full complete-chip flex items-center justify-center shrink-0"><i data-lucide="star" class="w-5 h-5"></i></div>
+      <div class="min-w-0">
+        <div id="celebrate-title" class="text-sm font-bold text-white font-heading">Card complete!</div>
+        <div id="celebrate-sub" class="text-[11px] text-slate-400 truncate"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card show mode: big quick check -->
+  <div id="show-mode" class="hidden fixed inset-0 z-[65] bg-slate-950 flex flex-col" role="dialog" aria-modal="true" aria-label="Card show mode" style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px)">
+    <div class="flex items-center justify-between gap-3 pt-3 pb-2" style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.18em] text-amber-300 font-semibold">Card show mode</div>
+        <div class="text-xs text-slate-500">All 3 binders • type a number or set</div>
+      </div>
+      <button onclick="closeShowMode()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold">Done</button>
+    </div>
+    <div style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">
+      <label for="show-input" class="sr-only">Card number or set</label>
+      <input id="show-input" type="search" inputmode="search" autocomplete="off" enterkeyhint="search" placeholder="e.g. 63/108 or Platinum"
+        oninput="renderShow(this.value)" class="w-full bg-slate-900 border-2 border-slate-700 focus:border-amber-500 outline-none rounded-2xl px-4 py-3 text-xl font-semibold text-white placeholder:text-slate-600">
+    </div>
+    <div id="show-result" class="flex-1 overflow-y-auto pt-4 pb-6" style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))"></div>
+  </div>
+
+  <!-- Shown while picking the second card to compare -->
+  <div id="compare-banner" class="hidden fixed left-1/2 -translate-x-1/2 z-[55] w-[min(26rem,calc(100vw-2rem))] bg-slate-900 border border-amber-500/50 rounded-2xl shadow-2xl px-3 py-2.5 flex items-center gap-3" style="bottom: calc(1rem + env(safe-area-inset-bottom, 0px))">
+    <i data-lucide="columns-2" class="w-4 h-4 text-amber-300 shrink-0"></i>
+    <p class="text-xs text-slate-200 flex-1 min-w-0">Tap or search a card to compare with <span id="compare-banner-name" class="font-semibold text-amber-300"></span></p>
+    <button onclick="cancelCompare()" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 shrink-0">Cancel</button>
+  </div>
+
+  <!-- Swipe mode page controls -->
+  <div id="swipe-pager" class="hidden fixed left-1/2 -translate-x-1/2 z-40 items-center gap-1 bg-slate-900/95 backdrop-blur border border-slate-700 rounded-full shadow-2xl px-1.5 py-1" style="bottom: calc(1rem + env(safe-area-inset-bottom, 0px))">
+    <button onclick="swipeBy(-1)" class="w-8 h-8 rounded-full hover:bg-slate-800 text-slate-200 flex items-center justify-center" aria-label="Previous page"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+    <span id="swipe-label" class="text-xs font-mono text-slate-300 px-2 min-w-[5.5rem] text-center tabular-nums">Page 1 of 7</span>
+    <button onclick="swipeBy(1)" class="w-8 h-8 rounded-full hover:bg-slate-800 text-slate-200 flex items-center justify-center" aria-label="Next page"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-6 mt-12 text-xs text-slate-500 text-center">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Slakoth Line Master Set Binder Guide • Slakoth, Vigoroth, Slaking</p>
+      <p class="mt-1 text-slate-600">Images from the Pokemon TCG image database and TCG Collector. Prices are a Near Mint snapshot from Oct 22, 2026 (PokeInvesting, Pack Magik, Hobby Bin, TCG Collector), not live.</p>
+    </div>
+  </footer>
+
+  <!-- DATA & APP LOGIC -->
+  <script>
+    // Master Set Binder Data Structure (55 Slots total: 48 Core + 7 Optional 1st Ed)
+    // Updated with precise Japanese card data, set codes, and custom visual cards cropped from your photos
+    const slakothData = [
+      // Page 1
+      {
+        page: 1, row: 1, col: "left", colLabel: "Left (EN Normal)",
+        id: "ex1-45", name: "EX Ruby & Sapphire", number: "45/109", finish: "Normal",
+        owned: true, era: "EX Era (2003)", img: "https://images.pokemontcg.io/ex1/45_hires.png",
+        notes: "First ever Slakoth TCG printing! Found in EX Ruby & Sapphire booster packs."
+      },
+      {
+        page: 1, row: 1, col: "center", colLabel: "Center (EN RH)",
+        id: "ex1-45-rh", name: "EX Ruby & Sapphire", number: "45/109 RH", finish: "Reverse Holo",
+        owned: false, era: "EX Era (2003)", img: "https://images.pokemontcg.io/ex1/45_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "EX-era Reverse Holo features full foil background card body. Priority pickup target."
+      },
+      {
+        page: 1, row: 1, col: "right", colLabel: "Right (Japanese)",
+        id: "adv1-041", name: "ADV Expansion Pack (JP)", number: "041/055", finish: "Japanese Normal",
+        owned: true, era: "ADV Era (2003)", hp: 40, jpText: "ナマケロ (Namakero)",
+        img: "https://static.tcgcollector.com/content/images/fa/a6/f5/faa6f5c120bd3b9a5d1dd8242de38d099f417aa2f4cd1589dafeeac1a1d1f0bf.jpg",
+        notes: "VERIFIED FROM YOUR PHOTO! Japanese ADV Expansion Pack #041/055 (HP40, Kagemaru Himeno art)."
+      },
+
+      {
+        page: 1, row: 2, col: "left", colLabel: "Left (EN Normal)",
+        id: "ex2-80", name: "EX Sandstorm", number: "80/100", finish: "Normal",
+        owned: true, era: "EX Era (2003)", img: "https://images.pokemontcg.io/ex2/80_hires.png",
+        notes: "Iconic artwork with Slakoth lounging on tree branch."
+      },
+      {
+        page: 1, row: 2, col: "center", colLabel: "Center (EN RH)",
+        id: "ex2-80-rh", name: "EX Sandstorm", number: "80/100 RH", finish: "Reverse Holo",
+        owned: false, era: "EX Era (2003)", img: "https://images.pokemontcg.io/ex2/80_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "High value target. Estimated around ~$24 NM on PokeInvesting market checks."
+      },
+      {
+        page: 1, row: 2, col: "right", colLabel: "Right (Japanese)",
+        id: "latias-009", name: "Latias ex Half Deck (JP)", number: "009/018", finish: "Japanese Deck",
+        owned: false, era: "ADV Era (2003)", img: "https://images.pokemontcg.io/ex2/80_hires.png", artNote: "Stand-in: showing the English EX Sandstorm print of this same card. The Japanese text and layout differ.",
+        notes: "Japanese pre-constructed deck print. No 1st Edition version found for this deck product."
+      },
+
+      {
+        page: 1, row: 3, col: "left", colLabel: "Left (EN Normal)",
+        id: "ex8-73", name: "EX Deoxys", number: "73/107", finish: "Normal",
+        owned: true, era: "EX Era (2005)", img: "https://images.pokemontcg.io/ex8/73_hires.png",
+        notes: "EX Deoxys set common. Checklist skip at #3 resolved as catalog numbering slip."
+      },
+      {
+        page: 1, row: 3, col: "center", colLabel: "Center (EN RH)",
+        id: "ex8-73-rh", name: "EX Deoxys", number: "73/107 RH", finish: "Reverse Holo",
+        owned: false, era: "EX Era (2005)", img: "https://images.pokemontcg.io/ex8/73_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "EX Deoxys stamped reverse holo."
+      },
+      {
+        page: 1, row: 3, col: "right", colLabel: "Right (Japanese)",
+        id: "pcg2-057", name: "Clash of the Blue Sky (JP)", number: "057/082", finish: "Japanese Normal",
+        owned: false, era: "PCG Era (2004)", img: "https://static.tcgcollector.com/content/images/63/d6/53/63d6533b59ad4c2584779fe2c89af3696f279c15ebc56fda40efff31a61c83bd.jpg",
+        notes: "Japanese release corresponding to English EX Deoxys."
+      },
+
+      // Page 2
+      {
+        page: 2, row: 1, col: "left", colLabel: "Left (EN Normal)",
+        id: "ex16-63", name: "EX Power Keepers", number: "63/108", finish: "Normal",
+        owned: false, era: "EX Era (2007)", img: "https://images.pokemontcg.io/ex16/63_hires.png",
+        notes: "Late EX Era set reprint with new artwork."
+      },
+      {
+        page: 2, row: 1, col: "center", colLabel: "Center (EN RH)",
+        id: "ex16-63-rh", name: "EX Power Keepers", number: "63/108 RH", finish: "Reverse Holo",
+        owned: false, era: "EX Era (2007)", img: "https://images.pokemontcg.io/ex16/63_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Power Keepers stamped Reverse Holo."
+      },
+      {
+        page: 2, row: 1, col: "right", colLabel: "Right (Japanese)",
+        id: "wcp-069", name: "World Champions Pack (JP)", number: "069/108", finish: "Japanese Normal",
+        owned: false, era: "PCG Era (2007)", img: "https://static.tcgcollector.com/content/images/d9/b3/6e/d9b36e119338417e87ad77d7c16e9a968b51b2cb36d41cbb2ad285f1743fc598.jpg",
+        notes: "Rare Japanese booster release printing."
+      },
+
+      {
+        page: 2, row: 2, col: "left", colLabel: "Left (EN Normal)",
+        id: "dp2-99", name: "Mysterious Treasures", number: "99/123", finish: "Normal",
+        owned: false, era: "Diamond & Pearl (2007)", img: "https://images.pokemontcg.io/dp2/99_hires.png",
+        notes: "Diamond & Pearl era debut for Slakoth."
+      },
+      {
+        page: 2, row: 2, col: "center", colLabel: "Center (EN RH)",
+        id: "dp2-99-rh", name: "Mysterious Treasures", number: "99/123 RH", finish: "Reverse Holo",
+        owned: false, era: "Diamond & Pearl (2007)", img: "https://images.pokemontcg.io/dp2/99_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "DP Mirror/Holo reverse background finish."
+      },
+      {
+        page: 2, row: 2, col: "right", colLabel: "Right (Japanese)",
+        id: "dp3-secret", name: "Secret of the Lakes (JP)", number: "Unnumbered", finish: "Japanese Normal",
+        owned: false, era: "DP Era (2007)", img: "https://images.pokemontcg.io/dp2/99_hires.png", artNote: "Stand-in: showing the English Mysterious Treasures print of this same card. The Japanese text and layout differ.",
+        notes: "Unnumbered card in Japanese DP set. Confirmed by Bulbapedia as correct."
+      },
+
+      {
+        page: 2, row: 3, col: "left", colLabel: "Left (EN Normal)",
+        id: "pl1-95", name: "Platinum", number: "95/127", finish: "Normal",
+        owned: true, era: "Platinum Era (2009)", img: "https://images.pokemontcg.io/pl1/95_hires.png",
+        notes: "Platinum Base Set common."
+      },
+      {
+        page: 2, row: 3, col: "center", colLabel: "Center (EN RH)",
+        id: "pl1-95-rh", name: "Platinum", number: "95/127 RH", finish: "Reverse Holo",
+        owned: false, era: "Platinum Era (2009)", img: "https://images.pokemontcg.io/pl1/95_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Platinum stamped reverse foil pattern."
+      },
+      {
+        page: 2, row: 3, col: "right", colLabel: "Right (Japanese)",
+        id: "pt1-072", name: "Galactic's Conquest (JP)", number: "072/096", finish: "Japanese Normal",
+        owned: false, era: "Pt Era (2008)", hp: 50,
+        img: "https://static.tcgcollector.com/content/images/40/a4/7b/40a47b0c727ca497314f94720c10c0bde6e894510e6b20b6bf1b0cf0443dd2d7.jpg",
+        notes: "Unlimited (no stamp) slot. Your photographed copy is the 1st Edition, so it lives on Page 7. Mark this owned only if you have a second, unstamped copy."
+      },
+
+      // Page 3
+      {
+        page: 3, row: 1, col: "left", colLabel: "Left (EN Normal)",
+        id: "bw5-101", name: "Dragons Exalted", number: "101/124", finish: "Normal",
+        owned: true, era: "Black & White (2012)", img: "https://images.pokemontcg.io/bw6/101_hires.png",
+        notes: "BW series Slakoth release."
+      },
+      {
+        page: 3, row: 1, col: "center", colLabel: "Center (EN RH)",
+        id: "bw5-101-rh", name: "Dragons Exalted", number: "101/124 RH", finish: "Reverse Holo",
+        owned: false, era: "Black & White (2012)", img: "https://images.pokemontcg.io/bw6/101_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "BW energy emblem pattern reverse holo."
+      },
+      {
+        page: 3, row: 1, col: "right", colLabel: "Right (Japanese)",
+        id: "bw5-041", name: "Dragon Blade (JP)", number: "041/050", finish: "Japanese Normal",
+        owned: false, era: "BW Era (2012)", img: "https://static.tcgcollector.com/content/images/91/6f/cd/916fcd06c96c6105817b41be1bdf5a77c28f9de15d132a935fb4949052570dfa.jpg",
+        notes: "Japanese BW set print."
+      },
+
+      {
+        page: 3, row: 2, col: "left", colLabel: "Left (EN Normal)",
+        id: "xy3-81", name: "Furious Fists", number: "81/111", finish: "Normal",
+        owned: true, era: "XY Era (2014)", img: "https://images.pokemontcg.io/xy3/81_hires.png",
+        notes: "XY Furious Fists common."
+      },
+      {
+        page: 3, row: 2, col: "center", colLabel: "Center (EN RH)",
+        id: "xy3-81-rh", name: "Furious Fists", number: "81/111 RH", finish: "Reverse Holo",
+        owned: false, era: "XY Era (2014)", img: "https://images.pokemontcg.io/xy3/81_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "XY style reverse holo foil."
+      },
+      {
+        page: 3, row: 2, col: "right", colLabel: "Right (Japanese)",
+        id: "xy3-076", name: "Rising Fist (JP)", number: "076/096", finish: "Japanese Normal",
+        owned: false, era: "XY Era (2014)", img: "https://static.tcgcollector.com/content/images/d8/6c/74/d86c741b90c63809112c801613872b30717535fb579bd0a4ddfe8fc0daf281d6.jpg",
+        notes: "Japanese XY3 print."
+      },
+
+      {
+        page: 3, row: 3, col: "left", colLabel: "Left (EN Kit #1)",
+        id: "xy-kit-15", name: "XY Trainer Kit (Bisharp)", number: "15/30", finish: "Trainer Kit",
+        owned: false, era: "XY Era (2014)", img: "https://images.pokemontcg.io/xy3/81_hires.png", artNote: "Stand-in: showing the Furious Fists print. Bulbapedia lists the trainer kit card as the same card; the kit card has its own number.",
+        notes: "Checklist correction! Exclusive half deck card #1 (No Reverse Holo available)."
+      },
+      {
+        page: 3, row: 3, col: "center", colLabel: "Center (EN Kit #2)",
+        id: "xy-kit-26", name: "XY Trainer Kit (Bisharp)", number: "26/30", finish: "Trainer Kit",
+        owned: false, era: "XY Era (2014)", img: "https://images.pokemontcg.io/xy3/81_hires.png", artNote: "Stand-in: showing the Furious Fists print. Bulbapedia lists the trainer kit card as the same card; the kit card has its own number.",
+        notes: "Checklist correction! Exclusive half deck card #2 (No Reverse Holo available)."
+      },
+      {
+        page: 3, row: 3, col: "right", colLabel: "Right (Open)",
+        id: "p3-r3-open", name: "Open Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "N/A", img: "", isOpen: true,
+        notes: "Open pocket due to non-standard Trainer Kit 2-card format in row."
+      },
+
+      // Page 4
+      {
+        page: 4, row: 1, col: "left", colLabel: "Left (EN Normal)",
+        id: "sm7-113", name: "Celestial Storm", number: "113/168", finish: "Normal",
+        owned: true, era: "Sun & Moon (2018)", img: "https://images.pokemontcg.io/sm7/113_hires.png",
+        notes: "Sun & Moon Celestial Storm base common."
+      },
+      {
+        page: 4, row: 1, col: "center", colLabel: "Center (EN RH)",
+        id: "sm7-113-rh", name: "Celestial Storm", number: "113/168 RH", finish: "Reverse Holo",
+        owned: false, era: "Sun & Moon (2018)", img: "https://images.pokemontcg.io/sm7/113_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "SM reverse holo watermark foil."
+      },
+      {
+        page: 4, row: 1, col: "right", colLabel: "Right (Japanese)",
+        id: "sm6b-049", name: "Champion Road (JP)", number: "049/066", finish: "Japanese Normal",
+        owned: false, era: "SM Era (2018)", img: "https://static.tcgcollector.com/content/images/e0/5f/40/e05f40ea3642ab946afede0a57fa9e3dd6fa381ccb40b741f56503b3c6975ad0.jpg",
+        notes: "Released after Sep 2016 - 1st Edition stamps no longer produced for this set."
+      },
+
+      {
+        page: 4, row: 2, col: "left", colLabel: "Left (EN Normal)",
+        id: "sm11-167", name: "Unified Minds #167", number: "167/236", finish: "Normal",
+        owned: true, era: "Sun & Moon (2019)", img: "https://images.pokemontcg.io/sm11/167_hires.png",
+        notes: "First of two Slakoth variants in Unified Minds."
+      },
+      {
+        page: 4, row: 2, col: "center", colLabel: "Center (EN RH)",
+        id: "sm11-167-rh", name: "Unified Minds #167", number: "167/236 RH", finish: "Reverse Holo",
+        owned: false, era: "Sun & Moon (2019)", img: "https://images.pokemontcg.io/sm11/167_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Reverse holo variant for card #167."
+      },
+      {
+        page: 4, row: 2, col: "right", colLabel: "Right (Japanese)",
+        id: "sm11a-073", name: "Miracle Twin #073 (JP)", number: "073/094 C", finish: "Japanese Normal",
+        owned: true, era: "SM Era (2019)", hp: 50,
+        img: "https://static.tcgcollector.com/content/images/b9/08/10/b9081037c797a9757ab85514f2558e72724cf0b84396899ba4219a9b3305b8fc.jpg",
+        notes: "VERIFIED FROM YOUR PHOTO! Miracle Twin #073/094 C (HP50, Miki Kudo art holding green fruit)."
+      },
+
+      {
+        page: 4, row: 3, col: "left", colLabel: "Left (EN Normal)",
+        id: "sm11-168", name: "Unified Minds #168", number: "168/236", finish: "Normal",
+        owned: true, era: "Sun & Moon (2019)", img: "https://images.pokemontcg.io/sm11/168_hires.png",
+        notes: "Second artwork variant in Unified Minds."
+      },
+      {
+        page: 4, row: 3, col: "center", colLabel: "Center (EN RH)",
+        id: "sm11-168-rh", name: "Unified Minds #168", number: "168/236 RH", finish: "Reverse Holo",
+        owned: false, era: "Sun & Moon (2019)", img: "https://images.pokemontcg.io/sm11/168_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Reverse holo variant for card #168."
+      },
+      {
+        page: 4, row: 3, col: "right", colLabel: "Right (Japanese)",
+        id: "sm11a-074", name: "Miracle Twin #074 (JP)", number: "074/094 C", finish: "Japanese Normal",
+        owned: true, era: "SM Era (2019)", hp: 70,
+        img: "https://static.tcgcollector.com/content/images/29/06/18/2906183ddadbdcd74346ac2df36869cd364e034d62d2dba261a2dbacb4b2fcbc.jpg",
+        notes: "VERIFIED FROM YOUR PHOTO! Miracle Twin #074/094 C (HP70, Tetsuya Koizumi art reclining under grapes)."
+      },
+
+      // Page 5
+      {
+        page: 5, row: 1, col: "left", colLabel: "Left (EN Normal)",
+        id: "swsh7-129", name: "Evolving Skies", number: "129/203", finish: "Normal",
+        owned: true, era: "Sword & Shield (2021)", img: "https://images.pokemontcg.io/swsh7/129_hires.png",
+        notes: "Popular Sword & Shield expansion common."
+      },
+      {
+        page: 5, row: 1, col: "center", colLabel: "Center (EN RH)",
+        id: "swsh7-129-rh", name: "Evolving Skies", number: "129/203 RH", finish: "Reverse Holo",
+        owned: true, era: "Sword & Shield (2021)", img: "https://images.pokemontcg.io/swsh7/129_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Reverse Holo owned!"
+      },
+      {
+        page: 5, row: 1, col: "right", colLabel: "Right (Japanese)",
+        id: "s7r-050", name: "Skyscraping Perfection (JP)", number: "050/067", finish: "Japanese Normal",
+        owned: false, era: "SwSh Era (2021)", img: "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748077808285x493968907768744800/050_slakoth.webp",
+        notes: "Japanese SwSh print matching Evolving Skies."
+      },
+
+      {
+        page: 5, row: 2, col: "left", colLabel: "Left (EN Normal)",
+        id: "sv2-160", name: "Paldea Evolved", number: "160/193", finish: "Normal",
+        owned: true, era: "Scarlet & Violet (2023)", img: "https://images.pokemontcg.io/sv2/160_hires.png",
+        notes: "Scarlet & Violet debut card."
+      },
+      {
+        page: 5, row: 2, col: "center", colLabel: "Center (EN RH)",
+        id: "sv2-160-rh", name: "Paldea Evolved", number: "160/193 RH", finish: "Reverse Holo",
+        owned: true, era: "Scarlet & Violet (2023)", img: "https://images.pokemontcg.io/sv2/160_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "SV silver border reverse holo finish owned."
+      },
+      {
+        page: 5, row: 2, col: "right", colLabel: "Right (Japanese)",
+        id: "sv2p-060", name: "Snow Hazard (JP)", number: "060/071 C", finish: "Japanese Normal",
+        owned: true, era: "SV Era (2023)", hp: 70,
+        img: "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748084903210x864458937093453000/060_slakoth.webp",
+        notes: "VERIFIED FROM YOUR PHOTO! Snow Hazard #060/071 C (HP70, Shigenori Negishi art sitting against log)."
+      },
+
+      {
+        page: 5, row: 3, col: "left", colLabel: "Left (EN Normal)",
+        id: "sv8-145", name: "Surging Sparks", number: "145/191", finish: "Normal",
+        owned: true, era: "Scarlet & Violet (2024)", img: "https://images.pokemontcg.io/sv8/145_hires.png",
+        notes: "Modern core common."
+      },
+      {
+        page: 5, row: 3, col: "center", colLabel: "Center (EN RH)",
+        id: "sv8-145-rh", name: "Surging Sparks", number: "145/191 RH", finish: "Reverse Holo",
+        owned: true, era: "Scarlet & Violet (2024)", img: "https://images.pokemontcg.io/sv8/145_hires.png", artNote: "Same artwork as the Normal print. This image does not show the Reverse Holo foil.",
+        notes: "Reverse Holo owned."
+      },
+      {
+        page: 5, row: 3, col: "right", colLabel: "Right (Japanese)",
+        id: "sv8-082", name: "Super Electric Breaker (JP)", number: "082/106 C", finish: "Japanese Normal",
+        owned: true, era: "SV Era (2024)", hp: 60,
+        img: "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748087667800x272754359062375330/082_slakoth.webp",
+        notes: "VERIFIED FROM YOUR PHOTO! Super Electric Breaker #082/106 C (HP60, Aya Kusube art upside down on tree branch). Note the SV8 set symbol vs HC!"
+      },
+
+      // Page 6 (Showcase Page & Core Set Finale)
+      {
+        page: 6, row: 1, col: "left", colLabel: "Left (EN IR)",
+        id: "sv8-212-ir", name: "Surging Sparks Illustration Rare", number: "212/191 IR", finish: "Illustration Rare",
+        owned: true, era: "Scarlet & Violet (2024)", img: "https://images.pokemontcg.io/sv8/212_hires.png",
+        notes: "CROWN JEWEL: Full-art Illustration Rare! Gorgeous artwork."
+      },
+      {
+        page: 6, row: 1, col: "center", colLabel: "Center (Open Spacer)",
+        id: "p6-r1-open", name: "Open Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "N/A", img: "", isOpen: true,
+        notes: "Open pocket spacing out the showcase Illustration Rares."
+      },
+      {
+        page: 6, row: 1, col: "right", colLabel: "Right (JP AR)",
+        id: "sv8-117-ar", name: "Super Electric Breaker AR (JP)", number: "117/106 AR", finish: "Art Rare (JP)",
+        owned: true, era: "SV Era (2024)", img: "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748087744840x170037578002809600/117_slakoth.webp",
+        notes: "Japanese Art Rare counterpart owned!"
+      },
+
+      {
+        page: 6, row: 2, col: "left", colLabel: "Left (Open)",
+        id: "p6-r2-l-open", name: "Open Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "N/A", img: "", isOpen: true,
+        notes: "Open pocket before Japanese deck prints."
+      },
+      {
+        page: 6, row: 2, col: "center", colLabel: "Center (JP Start Deck)",
+        id: "sd100-344", name: "Start Deck 100 (JP)", number: "344/414", finish: "Japanese Deck",
+        owned: false, era: "SwSh Era (2021)", img: "https://images.pokemontcg.io/swsh7/129_hires.png", artNote: "Stand-in: showing the English Evolving Skies print of this same card. The Japanese deck print differs.",
+        notes: "Japanese deck print #344."
+      },
+      {
+        page: 6, row: 2, col: "right", colLabel: "Right (JP Start Deck)",
+        id: "sd100-581", name: "Start Deck 100 Battle Collection (JP)", number: "581/742", finish: "Japanese Deck",
+        owned: true, era: "SV Era (2025)", hp: 60,
+        img: "",
+        notes: "VERIFIED FROM YOUR PHOTO! Start Deck 100 Battle Collection #581/742 (Set code HC, HP60). Note how it shares Aya Kusube's artwork with SV8!"
+      },
+
+      {
+        page: 6, row: 3, col: "left", colLabel: "Left (Future)",
+        id: "p6-r3-l", name: "Future Release Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "Future", img: "", isOpen: true,
+        notes: "Reserved for future Slakoth release."
+      },
+      {
+        page: 6, row: 3, col: "center", colLabel: "Center (Future)",
+        id: "p6-r3-c", name: "Future Release Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "Future", img: "", isOpen: true,
+        notes: "Reserved for future Slakoth release."
+      },
+      {
+        page: 6, row: 3, col: "right", colLabel: "Right (Future)",
+        id: "p6-r3-r", name: "Future Release Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "Future", img: "", isOpen: true,
+        notes: "Reserved for future Slakoth release."
+      },
+
+      // Page 7 (Optional Japanese 1st Editions - 7 slots)
+      {
+        page: 7, row: 1, col: "left", colLabel: "Left (1st Ed)",
+        id: "adv1-041-1st", name: "ADV Expansion Pack (JP) 1st Ed", number: "041/055 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "ADV Era (2003)", img: "https://static.tcgcollector.com/content/images/fa/a6/f5/faa6f5c120bd3b9a5d1dd8242de38d099f417aa2f4cd1589dafeeac1a1d1f0bf.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "Optional 1st Edition stamp print listed by Pack Magik."
+      },
+      {
+        page: 7, row: 1, col: "center", colLabel: "Center (1st Ed)",
+        id: "pcg2-057-1st", name: "Clash of the Blue Sky (JP) 1st Ed", number: "057/082 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "PCG Era (2004)", img: "https://static.tcgcollector.com/content/images/63/d6/53/63d6533b59ad4c2584779fe2c89af3696f279c15ebc56fda40efff31a61c83bd.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "Optional 1st Edition stamp print."
+      },
+      {
+        page: 7, row: 1, col: "right", colLabel: "Right (1st Ed)",
+        id: "wcp-069-1st", name: "World Champions Pack (JP) 1st Ed", number: "069/108 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "PCG Era (2007)", img: "https://static.tcgcollector.com/content/images/d9/b3/6e/d9b36e119338417e87ad77d7c16e9a968b51b2cb36d41cbb2ad285f1743fc598.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "Listed at ~$20 vs ~$60 for Unlimited version."
+      },
+
+      {
+        page: 7, row: 2, col: "left", colLabel: "Left (1st Ed)",
+        id: "dp3-secret-1st", name: "Secret of the Lakes (JP) 1st Ed", number: "Unnumbered 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "DP Era (2007)", img: "https://images.pokemontcg.io/dp2/99_hires.png", artNote: "Stand-in: showing the English Mysterious Treasures print of this same card.",
+        notes: "Sellers stock this unnumbered card in 1st Edition."
+      },
+      {
+        page: 7, row: 2, col: "center", colLabel: "Center (1st Ed)",
+        id: "pt1-072-1st", name: "Galactic's Conquest (JP) 1st Ed", number: "072/096 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: true, era: "Pt Era (2008)",
+        img: "https://static.tcgcollector.com/content/images/40/a4/7b/40a47b0c727ca497314f94720c10c0bde6e894510e6b20b6bf1b0cf0443dd2d7.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "VERIFIED FROM YOUR PHOTO! Your owned copy has the 1st Edition logo stamp on bottom left!"
+      },
+      {
+        page: 7, row: 2, col: "right", colLabel: "Right (1st Ed)",
+        id: "bw5-041-1st", name: "Dragon Blade (JP) 1st Ed", number: "041/050 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "BW Era (2012)", img: "https://static.tcgcollector.com/content/images/91/6f/cd/916fcd06c96c6105817b41be1bdf5a77c28f9de15d132a935fb4949052570dfa.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "1st Edition edition from BW Era."
+      },
+
+      {
+        page: 7, row: 3, col: "left", colLabel: "Left (1st Ed)",
+        id: "xy3-076-1st", name: "Rising Fist (JP) 1st Ed", number: "076/096 1st", finish: "1st Edition (JP)",
+        is1stEd: true, owned: false, era: "XY Era (2014)", img: "https://static.tcgcollector.com/content/images/d8/6c/74/d86c741b90c63809112c801613872b30717535fb579bd0a4ddfe8fc0daf281d6.jpg", artNote: "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+        notes: "Final Japanese Slakoth set printed with 1st Edition logo before 2016 phaseout."
+      },
+      {
+        page: 7, row: 3, col: "center", colLabel: "Center (Open)",
+        id: "p7-r3-c-open", name: "Open Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "N/A", img: "", isOpen: true,
+        notes: "Open pocket on 1st Edition page."
+      },
+      {
+        page: 7, row: 3, col: "right", colLabel: "Right (Open)",
+        id: "p7-r3-r-open", name: "Open Slot", number: "N/A", finish: "Open Pocket",
+        owned: true, era: "N/A", img: "", isOpen: true,
+        notes: "Open pocket on 1st Edition page."
+      }
+    ];
+
+    // Vigoroth (Bulbapedia card list; images from the Pokemon TCG image database and TCG Collector)
+    const vigorothData = [
+ {
+  "page": 1,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-ex1-47",
+  "name": "EX Ruby & Sapphire",
+  "number": "47/109",
+  "finish": "Normal",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex1/47_hires.png",
+  "notes": "EX Ruby & Sapphire print."
+ },
+ {
+  "page": 1,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-ex1-47-rh",
+  "name": "EX Ruby & Sapphire",
+  "number": "47/109 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex1/47_hires.png",
+  "notes": "EX Ruby & Sapphire Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-adv-expansion-pack-042",
+  "name": "ADV Expansion Pack (JP)",
+  "number": "042/055",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "ADV Era (2003)",
+  "img": "https://static.tcgcollector.com/content/images/13/10/a4/1310a4bc8cd642ad3bbbf5efab0ecb1cea2d640b9d6cd2487069448662cec5ac.webp",
+  "notes": "Japanese print matching EX Ruby & Sapphire."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-ex2-52",
+  "name": "EX Sandstorm",
+  "number": "52/100",
+  "finish": "Normal",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex2/52_hires.png",
+  "notes": "EX Sandstorm print."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-ex2-52-rh",
+  "name": "EX Sandstorm",
+  "number": "52/100 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex2/52_hires.png",
+  "notes": "EX Sandstorm Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-latias-ex-half-deck-010",
+  "name": "Latias ex Half Deck (JP)",
+  "number": "010/018",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "ADV Era (2004)",
+  "img": "https://static.tcgcollector.com/content/images/bf/19/25/bf19257f2f3b53b70f3e6b1dcbcab2cc529534978eab40ebf546b9139b9cf66a.webp",
+  "notes": "Japanese print matching EX Sandstorm."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-ex8-50",
+  "name": "EX Deoxys",
+  "number": "50/107",
+  "finish": "Normal",
+  "owned": false,
+  "era": "EX Era (2005)",
+  "img": "https://images.pokemontcg.io/ex8/50_hires.png",
+  "notes": "EX Deoxys print."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-ex8-50-rh",
+  "name": "EX Deoxys",
+  "number": "50/107 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2005)",
+  "img": "https://images.pokemontcg.io/ex8/50_hires.png",
+  "notes": "EX Deoxys Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-clash-of-the-blue-sky-058",
+  "name": "Clash of the Blue Sky (JP)",
+  "number": "058/082",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "PCG Era (2005)",
+  "img": "https://static.tcgcollector.com/content/images/d8/4e/98/d84e983abcdcd7dd52aa399f7d4228ecca5b26c128e846b471a44580e3cf488f.webp",
+  "notes": "Japanese print matching EX Deoxys."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-ex16-41",
+  "name": "EX Power Keepers",
+  "number": "41/108",
+  "finish": "Normal",
+  "owned": false,
+  "era": "EX Era (2007)",
+  "img": "https://images.pokemontcg.io/ex16/41_hires.png",
+  "notes": "EX Power Keepers print."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-ex16-41-rh",
+  "name": "EX Power Keepers",
+  "number": "41/108 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2007)",
+  "img": "https://images.pokemontcg.io/ex16/41_hires.png",
+  "notes": "EX Power Keepers Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-world-champions-pack-070",
+  "name": "World Champions Pack (JP)",
+  "number": "070/108",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "PCG Era (2007)",
+  "img": "https://static.tcgcollector.com/content/images/85/57/e6/8557e6158ca7a2e664cb2f8390d218acbcd79f63477596035e77e6254aeabd95.webp",
+  "notes": "Japanese print matching EX Power Keepers."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-dp2-68",
+  "name": "Mysterious Treasures",
+  "number": "68/123",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Diamond & Pearl (2007)",
+  "img": "https://images.pokemontcg.io/dp2/68_hires.png",
+  "notes": "Mysterious Treasures print."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-dp2-68-rh",
+  "name": "Mysterious Treasures",
+  "number": "68/123 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Diamond & Pearl (2007)",
+  "img": "https://images.pokemontcg.io/dp2/68_hires.png",
+  "notes": "Mysterious Treasures Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-secret-of-the-lakes-nn",
+  "name": "Secret of the Lakes (JP)",
+  "number": "Unnumbered",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "DP Era (2007)",
+  "img": "https://images.pokemontcg.io/dp2/68_hires.png",
+  "notes": "Japanese print matching Mysterious Treasures.",
+  "artNote": "Stand-in: showing the English Mysterious Treasures print of this same card. The Japanese text and layout differ."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-pl1-64",
+  "name": "Platinum",
+  "number": "64/127",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Platinum Era (2009)",
+  "img": "https://images.pokemontcg.io/pl1/64_hires.png",
+  "notes": "Platinum print."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-pl1-64-rh",
+  "name": "Platinum",
+  "number": "64/127 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Platinum Era (2009)",
+  "img": "https://images.pokemontcg.io/pl1/64_hires.png",
+  "notes": "Platinum Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-galactics-conquest-073",
+  "name": "Galactic's Conquest (JP)",
+  "number": "073/096",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "Pt Era (2008)",
+  "img": "https://static.tcgcollector.com/content/images/c6/f8/ad/c6f8ad586f179523d51d1460920b6ab3f1e162ce088ab1860ed79151d529ec92.webp",
+  "notes": "Japanese print matching Platinum."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-bw6-102",
+  "name": "Dragons Exalted",
+  "number": "102/124",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Black & White (2012)",
+  "img": "https://images.pokemontcg.io/bw6/102_hires.png",
+  "notes": "Dragons Exalted print."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-bw6-102-rh",
+  "name": "Dragons Exalted",
+  "number": "102/124 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Black & White (2012)",
+  "img": "https://images.pokemontcg.io/bw6/102_hires.png",
+  "notes": "Dragons Exalted Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-dragon-blade-042",
+  "name": "Dragon Blade (JP)",
+  "number": "042/050",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "BW Era (2012)",
+  "img": "https://static.tcgcollector.com/content/images/4e/23/f2/4e23f2ad3ffe6b9bbd3df04eb9399a374d423af6ab6f0cf0ccae68e074bf9cc4.jpg",
+  "notes": "Japanese print matching Dragons Exalted."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-xy3-82",
+  "name": "Furious Fists",
+  "number": "82/111",
+  "finish": "Normal",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/82_hires.png",
+  "notes": "Furious Fists print."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-xy3-82-rh",
+  "name": "Furious Fists",
+  "number": "82/111 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/82_hires.png",
+  "notes": "Furious Fists Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-rising-fist-077",
+  "name": "Rising Fist (JP)",
+  "number": "077/096",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://static.tcgcollector.com/content/images/5f/c5/d9/5fc5d9643fa75991c88f2680f23815062587567a5a10692e17b1248c3002939e.jpg",
+  "notes": "Japanese print matching Furious Fists."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Kit #1)",
+  "id": "vig-kit-4",
+  "name": "XY Trainer Kit (Bisharp)",
+  "number": "4/30",
+  "finish": "Trainer Kit",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/82_hires.png",
+  "notes": "Half deck card. No Reverse Holo exists.",
+  "artNote": "Stand-in: showing the Furious Fists print. Bulbapedia lists the trainer kit card as the same card; the kit card has its own number."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN Kit #2)",
+  "id": "vig-kit-28",
+  "name": "XY Trainer Kit (Bisharp)",
+  "number": "28/30",
+  "finish": "Trainer Kit",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/82_hires.png",
+  "notes": "Half deck card. No Reverse Holo exists.",
+  "artNote": "Stand-in: showing the Furious Fists print. Bulbapedia lists the trainer kit card as the same card; the kit card has its own number."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Open)",
+  "id": "vig-p3-r3-open",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket next to the 2-card trainer kit row."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-sm7-114",
+  "name": "Celestial Storm",
+  "number": "114/168",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Sun & Moon (2018)",
+  "img": "https://images.pokemontcg.io/sm7/114_hires.png",
+  "notes": "Celestial Storm print."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-sm7-114-rh",
+  "name": "Celestial Storm",
+  "number": "114/168 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sun & Moon (2018)",
+  "img": "https://images.pokemontcg.io/sm7/114_hires.png",
+  "notes": "Celestial Storm Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-champion-road-050",
+  "name": "Champion Road (JP)",
+  "number": "050/066",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SM Era (2018)",
+  "img": "https://static.tcgcollector.com/content/images/5f/ae/06/5fae069588b6d184979ce3f918cea5d5dbf4c29ed06591faa9e710873582ac3c.jpg",
+  "notes": "Japanese print matching Celestial Storm."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-sm11-169",
+  "name": "Unified Minds",
+  "number": "169/236",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Sun & Moon (2019)",
+  "img": "https://images.pokemontcg.io/sm11/169_hires.png",
+  "notes": "Unified Minds print."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-sm11-169-rh",
+  "name": "Unified Minds",
+  "number": "169/236 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sun & Moon (2019)",
+  "img": "https://images.pokemontcg.io/sm11/169_hires.png",
+  "notes": "Unified Minds Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-miracle-twin-075",
+  "name": "Miracle Twin (JP)",
+  "number": "075/094",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SM Era (2019)",
+  "img": "https://static.tcgcollector.com/content/images/16/6e/37/166e37b8fdfd7605894645ff52ecdb540b10709b59a289ee1eb472652f55b176.jpg",
+  "notes": "Japanese print matching Unified Minds."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-swsh7-130",
+  "name": "Evolving Skies",
+  "number": "130/203",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Sword & Shield (2021)",
+  "img": "https://images.pokemontcg.io/swsh7/130_hires.png",
+  "notes": "Evolving Skies print."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-swsh7-130-rh",
+  "name": "Evolving Skies",
+  "number": "130/203 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sword & Shield (2021)",
+  "img": "https://images.pokemontcg.io/swsh7/130_hires.png",
+  "notes": "Evolving Skies Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-skyscraping-perfection-051",
+  "name": "Skyscraping Perfection (JP)",
+  "number": "051/067",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SwSh Era (2021)",
+  "img": "https://static.tcgcollector.com/content/images/56/c9/7e/56c97e83fcc954d6956d99b3e89afdf10133cbbfbc20c4b862145ff6384f8263.jpg",
+  "notes": "Japanese print matching Evolving Skies."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-sv2-161",
+  "name": "Paldea Evolved",
+  "number": "161/193",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Scarlet & Violet (2023)",
+  "img": "https://images.pokemontcg.io/sv2/161_hires.png",
+  "notes": "Paldea Evolved print."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-sv2-161-rh",
+  "name": "Paldea Evolved",
+  "number": "161/193 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Scarlet & Violet (2023)",
+  "img": "https://images.pokemontcg.io/sv2/161_hires.png",
+  "notes": "Paldea Evolved Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-snow-hazard-061",
+  "name": "Snow Hazard (JP)",
+  "number": "061/071",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SV Era (2023)",
+  "img": "https://static.tcgcollector.com/content/images/ca/c8/e4/cac8e40f7e1167093d17650057a5316d1fc94f2c91c26515f0745bed8c15aaf4.jpg",
+  "notes": "Japanese print matching Paldea Evolved."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "vig-sv8-146",
+  "name": "Surging Sparks",
+  "number": "146/191",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Scarlet & Violet (2024)",
+  "img": "https://images.pokemontcg.io/sv8/146_hires.png",
+  "notes": "Surging Sparks print."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "vig-sv8-146-rh",
+  "name": "Surging Sparks",
+  "number": "146/191 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Scarlet & Violet (2024)",
+  "img": "https://images.pokemontcg.io/sv8/146_hires.png",
+  "notes": "Surging Sparks Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "vig-jp-super-electric-breaker-083",
+  "name": "Super Electric Breaker (JP)",
+  "number": "083/106",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SV Era (2024)",
+  "img": "https://static.tcgcollector.com/content/images/ee/26/f3/ee26f3c3432fe84ae0ed3951d32bd4e74ea229baa46b9eea4d4718f658abf3cb.jpg",
+  "notes": "Japanese print matching Surging Sparks."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (Open)",
+  "id": "vig-p5-r3-open",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket before the Japanese deck prints."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (JP Start Deck)",
+  "id": "vig-sd100-345",
+  "name": "Start Deck 100 (JP)",
+  "number": "345/414",
+  "finish": "Japanese Deck",
+  "owned": false,
+  "era": "SwSh Era (2021)",
+  "img": "https://static.tcgcollector.com/content/images/12/40/5a/12405a8f428210130564c7ed6911f6476ce938be20628b5fa28a6ef113c8eab9.jpg",
+  "notes": "Japanese deck print of the Evolving Skies card."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (JP Start Deck)",
+  "id": "vig-sdbc-582",
+  "name": "Start Deck 100 Battle Collection (JP)",
+  "number": "582/742",
+  "finish": "Japanese Deck",
+  "owned": false,
+  "era": "SV Era (2025)",
+  "img": "https://static.tcgcollector.com/content/images/fe/d2/ea/fed2ea58cf44f28bbe94f173f7d1ccf393da7c0f548f83c9186391870b637907.webp",
+  "notes": "Japanese-only deck print."
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "vig-1st-adv",
+  "name": "ADV Expansion Pack (JP) 1st Ed",
+  "number": "042/055 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "ADV Era (2003)",
+  "img": "https://static.tcgcollector.com/content/images/13/10/a4/1310a4bc8cd642ad3bbbf5efab0ecb1cea2d640b9d6cd2487069448662cec5ac.webp",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (1st Ed)",
+  "id": "vig-1st-clash",
+  "name": "Clash of the Blue Sky (JP) 1st Ed",
+  "number": "058/082 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "PCG Era (2005)",
+  "img": "https://static.tcgcollector.com/content/images/d8/4e/98/d84e983abcdcd7dd52aa399f7d4228ecca5b26c128e846b471a44580e3cf488f.webp",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (1st Ed)",
+  "id": "vig-1st-world",
+  "name": "World Champions Pack (JP) 1st Ed",
+  "number": "070/108 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "PCG Era (2007)",
+  "img": "https://static.tcgcollector.com/content/images/85/57/e6/8557e6158ca7a2e664cb2f8390d218acbcd79f63477596035e77e6254aeabd95.webp",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "vig-1st-secret",
+  "name": "Secret of the Lakes (JP) 1st Ed",
+  "number": "Unnumbered 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "DP Era (2007)",
+  "img": "https://images.pokemontcg.io/dp2/68_hires.png",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Stand-in: showing the English Mysterious Treasures print of this same card.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (1st Ed)",
+  "id": "vig-1st-galactic's",
+  "name": "Galactic's Conquest (JP) 1st Ed",
+  "number": "073/096 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "Pt Era (2008)",
+  "img": "https://static.tcgcollector.com/content/images/c6/f8/ad/c6f8ad586f179523d51d1460920b6ab3f1e162ce088ab1860ed79151d529ec92.webp",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (1st Ed)",
+  "id": "vig-1st-dragon",
+  "name": "Dragon Blade (JP) 1st Ed",
+  "number": "042/050 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "BW Era (2012)",
+  "img": "https://static.tcgcollector.com/content/images/4e/23/f2/4e23f2ad3ffe6b9bbd3df04eb9399a374d423af6ab6f0cf0ccae68e074bf9cc4.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "vig-1st-rising",
+  "name": "Rising Fist (JP) 1st Ed",
+  "number": "077/096 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://static.tcgcollector.com/content/images/5f/c5/d9/5fc5d9643fa75991c88f2680f23815062587567a5a10692e17b1248c3002939e.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (Open)",
+  "id": "vig-1st-open-c",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket on the 1st Edition page."
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Open)",
+  "id": "vig-1st-open-r",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket on the 1st Edition page."
+ }
+];
+
+    // Slaking
+    const slakingData = [
+ {
+  "page": 1,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-ex1-12",
+  "name": "EX Ruby & Sapphire",
+  "number": "12/109",
+  "finish": "Holo",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex1/12_hires.png",
+  "notes": "EX Ruby & Sapphire print."
+ },
+ {
+  "page": 1,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-ex1-12-rh",
+  "name": "EX Ruby & Sapphire",
+  "number": "12/109 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2003)",
+  "img": "https://images.pokemontcg.io/ex1/12_hires.png",
+  "notes": "EX Ruby & Sapphire Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-adv-expansion-pack-043",
+  "name": "ADV Expansion Pack (JP)",
+  "number": "043/055",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "ADV Era (2003)",
+  "img": "https://static.tcgcollector.com/content/images/5e/7c/81/5e7c817349393532b14f5ea191cbfe7838eb33f56e1f95bbe27446af39793109.jpg",
+  "notes": "Japanese print matching EX Ruby & Sapphire."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-ex8-15",
+  "name": "EX Deoxys",
+  "number": "15/107",
+  "finish": "Holo",
+  "owned": false,
+  "era": "EX Era (2005)",
+  "img": "https://images.pokemontcg.io/ex8/15_hires.png",
+  "notes": "EX Deoxys print."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-ex8-15-rh",
+  "name": "EX Deoxys",
+  "number": "15/107 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2005)",
+  "img": "https://images.pokemontcg.io/ex8/15_hires.png",
+  "notes": "EX Deoxys Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-clash-of-the-blue-sky-059",
+  "name": "Clash of the Blue Sky (JP)",
+  "number": "059/082",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "PCG Era (2005)",
+  "img": "https://static.tcgcollector.com/content/images/aa/0c/1f/aa0c1fbe506399f42f18afebad3e97c04ee5487cd19bce70cab250054464246c.jpg",
+  "notes": "Japanese print matching EX Deoxys."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-ex16-13",
+  "name": "EX Power Keepers",
+  "number": "13/108",
+  "finish": "Holo",
+  "owned": false,
+  "era": "EX Era (2007)",
+  "img": "https://images.pokemontcg.io/ex16/13_hires.png",
+  "notes": "Bulbapedia lists this as a reprint of the EX Ruby & Sapphire Slaking."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-ex16-13-rh",
+  "name": "EX Power Keepers",
+  "number": "13/108 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "EX Era (2007)",
+  "img": "https://images.pokemontcg.io/ex16/13_hires.png",
+  "notes": "EX Power Keepers Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 1,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-world-champions-pack-071",
+  "name": "World Champions Pack (JP)",
+  "number": "071/108",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "PCG Era (2007)",
+  "img": "https://static.tcgcollector.com/content/images/5e/61/ed/5e61ed5e1f25e6be20d943fd5efb9944733af5b85298dac8e28edb4e6b3f5cfb.jpg",
+  "notes": "Japanese print matching EX Power Keepers."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "slk-dp2-34",
+  "name": "Mysterious Treasures",
+  "number": "34/123",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Diamond & Pearl (2007)",
+  "img": "https://images.pokemontcg.io/dp2/34_hires.png",
+  "notes": "Rare, non-holo."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-dp2-34-rh",
+  "name": "Mysterious Treasures",
+  "number": "34/123 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Diamond & Pearl (2007)",
+  "img": "https://images.pokemontcg.io/dp2/34_hires.png",
+  "notes": "Mysterious Treasures Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-secret-of-the-lakes-nn",
+  "name": "Secret of the Lakes (JP)",
+  "number": "Unnumbered",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "DP Era (2007)",
+  "img": "https://images.pokemontcg.io/dp2/34_hires.png",
+  "notes": "Japanese print matching Mysterious Treasures.",
+  "artNote": "Stand-in: showing the English Mysterious Treasures print of this same card. The Japanese text and layout differ."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-pl1-16",
+  "name": "Platinum",
+  "number": "16/127",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Platinum Era (2009)",
+  "img": "https://images.pokemontcg.io/pl1/16_hires.png",
+  "notes": "Platinum print."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-pl1-16-rh",
+  "name": "Platinum",
+  "number": "16/127 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Platinum Era (2009)",
+  "img": "https://images.pokemontcg.io/pl1/16_hires.png",
+  "notes": "Platinum Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-galactics-conquest-074",
+  "name": "Galactic's Conquest (JP)",
+  "number": "074/096",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "Pt Era (2008)",
+  "img": "https://static.tcgcollector.com/content/images/07/37/00/073700f81de365d59c2da93459c4bcaf7db546590ee80cd35cb6d3899742b393.jpg",
+  "notes": "Japanese print matching Platinum."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-bw6-103",
+  "name": "Dragons Exalted",
+  "number": "103/124",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Black & White (2012)",
+  "img": "https://images.pokemontcg.io/bw6/103_hires.png",
+  "notes": "Dragons Exalted print."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-bw6-103-rh",
+  "name": "Dragons Exalted",
+  "number": "103/124 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Black & White (2012)",
+  "img": "https://images.pokemontcg.io/bw6/103_hires.png",
+  "notes": "Dragons Exalted Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 2,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-dragon-blade-043",
+  "name": "Dragon Blade (JP)",
+  "number": "043/050",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "BW Era (2012)",
+  "img": "https://static.tcgcollector.com/content/images/36/81/7d/36817d2d0198fad71d7985c030f2e5c3aad667ce251bc515f1734ae8be9406f2.jpg",
+  "notes": "Japanese print matching Dragons Exalted."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-xy3-83",
+  "name": "Furious Fists",
+  "number": "83/111",
+  "finish": "Holo",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/83_hires.png",
+  "notes": "Furious Fists print."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-xy3-83-rh",
+  "name": "Furious Fists",
+  "number": "83/111 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://images.pokemontcg.io/xy3/83_hires.png",
+  "notes": "Furious Fists Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 3,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-rising-fist-078",
+  "name": "Rising Fist (JP)",
+  "number": "078/096",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://static.tcgcollector.com/content/images/77/d3/fe/77d3fe5fb6bd746e23eee44a2e0fecda97f6bafec77feaec4ef9c7655ba7e05b.jpg",
+  "notes": "Japanese print matching Furious Fists."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-sm7-115",
+  "name": "Celestial Storm",
+  "number": "115/168",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Sun & Moon (2018)",
+  "img": "https://images.pokemontcg.io/sm7/115_hires.png",
+  "notes": "Celestial Storm print."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-sm7-115-rh",
+  "name": "Celestial Storm",
+  "number": "115/168 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sun & Moon (2018)",
+  "img": "https://images.pokemontcg.io/sm7/115_hires.png",
+  "notes": "Celestial Storm Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 3,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-champion-road-051",
+  "name": "Champion Road (JP)",
+  "number": "051/066",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SM Era (2018)",
+  "img": "https://static.tcgcollector.com/content/images/97/d2/31/97d2310e84d5c1a82f86115b8c7e624d40fefaa1aad7fc653d8b18e3ec05ecad.jpg",
+  "notes": "Japanese print matching Celestial Storm."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-det1-18",
+  "name": "Detective Pikachu",
+  "number": "18/18",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Sun & Moon (2019)",
+  "img": "https://images.pokemontcg.io/det1/18_hires.png",
+  "notes": "Detective Pikachu set had no Reverse Holos."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (No RH)",
+  "id": "slk-det-norh",
+  "name": "No Reverse Holo",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Detective Pikachu had no Reverse Holo, so this pocket stays empty."
+ },
+ {
+  "page": 3,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-gdp-024",
+  "name": "Great Detective Pikachu (JP)",
+  "number": "024/024",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SM Era (2019)",
+  "img": "https://static.tcgcollector.com/content/images/0f/03/97/0f03975777922882e36639b87439475fc4da8b51494eb02e09c79ab851e234d2.jpg",
+  "notes": "Japanese print matching Detective Pikachu."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-sm11-170",
+  "name": "Unified Minds",
+  "number": "170/236",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Sun & Moon (2019)",
+  "img": "https://images.pokemontcg.io/sm11/170_hires.png",
+  "notes": "Unified Minds print."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-sm11-170-rh",
+  "name": "Unified Minds",
+  "number": "170/236 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sun & Moon (2019)",
+  "img": "https://images.pokemontcg.io/sm11/170_hires.png",
+  "notes": "Unified Minds Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-miracle-twin-076",
+  "name": "Miracle Twin (JP)",
+  "number": "076/094",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SM Era (2019)",
+  "img": "https://static.tcgcollector.com/content/images/ca/4b/42/ca4b421959caa5f6c4fa985586887013204e12e0f5f1d9e1eb76351b95e21ae7.jpg",
+  "notes": "Japanese print matching Unified Minds."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN Holo)",
+  "id": "slk-swsh7-131",
+  "name": "Evolving Skies",
+  "number": "131/203",
+  "finish": "Holo",
+  "owned": false,
+  "era": "Sword & Shield (2021)",
+  "img": "https://images.pokemontcg.io/swsh7/131_hires.png",
+  "notes": "Evolving Skies print."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-swsh7-131-rh",
+  "name": "Evolving Skies",
+  "number": "131/203 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Sword & Shield (2021)",
+  "img": "https://images.pokemontcg.io/swsh7/131_hires.png",
+  "notes": "Evolving Skies Reverse Holo.",
+  "artNote": "Same artwork as the Holo print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-skyscraping-perfection-052",
+  "name": "Skyscraping Perfection (JP)",
+  "number": "052/067",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SwSh Era (2021)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748077812933x910493463732118000/052_slaking.webp",
+  "notes": "Japanese print matching Evolving Skies."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN Normal)",
+  "id": "slk-sv2-162",
+  "name": "Paldea Evolved",
+  "number": "162/193",
+  "finish": "Normal",
+  "owned": false,
+  "era": "Scarlet & Violet (2023)",
+  "img": "https://images.pokemontcg.io/sv2/162_hires.png",
+  "notes": "Paldea Evolved print."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (EN RH)",
+  "id": "slk-sv2-162-rh",
+  "name": "Paldea Evolved",
+  "number": "162/193 RH",
+  "finish": "Reverse Holo",
+  "owned": false,
+  "era": "Scarlet & Violet (2023)",
+  "img": "https://images.pokemontcg.io/sv2/162_hires.png",
+  "notes": "Paldea Evolved Reverse Holo.",
+  "artNote": "Same artwork as the Normal print. This image does not show the Reverse Holo foil."
+ },
+ {
+  "page": 4,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-snow-hazard-062",
+  "name": "Snow Hazard (JP)",
+  "number": "062/071",
+  "finish": "Japanese Normal",
+  "owned": false,
+  "era": "SV Era (2023)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748084907244x261559319212501630/062_slaking.webp",
+  "notes": "Japanese print matching Paldea Evolved."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN)",
+  "id": "slk-pgo-58",
+  "name": "Pokemon GO (Slaking V)",
+  "number": "058/078",
+  "finish": "Ultra Rare (V)",
+  "owned": false,
+  "era": "Sword & Shield (2022)",
+  "img": "https://images.pokemontcg.io/pgo/58_hires.png",
+  "notes": "Slaking V."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (No RH)",
+  "id": "slk-pgo-58-norh",
+  "name": "No Reverse Holo",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "This card has no Reverse Holo, so this pocket stays empty."
+ },
+ {
+  "page": 5,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-pgo-059",
+  "name": "Pokemon GO (JP) Slaking V",
+  "number": "059/071",
+  "finish": "Japanese RR",
+  "owned": false,
+  "era": "SwSh Era (2022)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748082179471x472958216982488800/059_slaking-v.webp",
+  "notes": "Japanese counterpart."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (EN)",
+  "id": "slk-pgo-77",
+  "name": "Pokemon GO (Slaking V Full Art)",
+  "number": "077/078",
+  "finish": "Full Art (V)",
+  "owned": false,
+  "era": "Sword & Shield (2022)",
+  "img": "https://images.pokemontcg.io/pgo/77_hires.png",
+  "notes": "Full Art Slaking V."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (No RH)",
+  "id": "slk-pgo-77-norh",
+  "name": "No Reverse Holo",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "This card has no Reverse Holo, so this pocket stays empty."
+ },
+ {
+  "page": 5,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-pgo-079",
+  "name": "Pokemon GO (JP) Slaking V SR",
+  "number": "079/071",
+  "finish": "Japanese SR",
+  "owned": false,
+  "era": "SwSh Era (2022)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748082222411x946470466055852500/079_slaking-v.webp",
+  "notes": "Japanese counterpart."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (EN)",
+  "id": "slk-sv8-147",
+  "name": "Surging Sparks (Slaking ex)",
+  "number": "147/191",
+  "finish": "Double Rare (ex)",
+  "owned": false,
+  "era": "Scarlet & Violet (2024)",
+  "img": "https://images.pokemontcg.io/sv8/147_hires.png",
+  "notes": "Slaking ex."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (No RH)",
+  "id": "slk-sv8-147-norh",
+  "name": "No Reverse Holo",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "This card has no Reverse Holo, so this pocket stays empty."
+ },
+ {
+  "page": 5,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-seb-084",
+  "name": "Super Electric Breaker (JP) Slaking ex",
+  "number": "084/106",
+  "finish": "Japanese RR",
+  "owned": false,
+  "era": "SV Era (2024)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748087672747x752165590478745900/084_slaking-ex.webp",
+  "notes": "Japanese counterpart."
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (EN)",
+  "id": "slk-sv8-227",
+  "name": "Surging Sparks (Slaking ex Full Art)",
+  "number": "227/191",
+  "finish": "Full Art (ex)",
+  "owned": false,
+  "era": "Scarlet & Violet (2024)",
+  "img": "https://images.pokemontcg.io/sv8/227_hires.png",
+  "notes": "Full Art Slaking ex."
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (No RH)",
+  "id": "slk-sv8-227-norh",
+  "name": "No Reverse Holo",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "This card has no Reverse Holo, so this pocket stays empty."
+ },
+ {
+  "page": 6,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (Japanese)",
+  "id": "slk-jp-seb-126",
+  "name": "Super Electric Breaker (JP) Slaking ex SR",
+  "number": "126/106",
+  "finish": "Japanese SR",
+  "owned": false,
+  "era": "SV Era (2024)",
+  "img": "https://fa15662732ebbf197bcb3f8cd08717f5.cdn.bubble.io/f1748087767783x960263194747471600/126_slaking-ex.webp",
+  "notes": "Japanese counterpart."
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (Open)",
+  "id": "slk-p6-r2-open",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket before the Japanese deck prints."
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (JP Start Deck)",
+  "id": "slk-sd100-346",
+  "name": "Start Deck 100 (JP)",
+  "number": "346/414",
+  "finish": "Japanese Deck",
+  "owned": false,
+  "era": "SwSh Era (2021)",
+  "img": "https://images.pokemontcg.io/swsh7/131_hires.png",
+  "notes": "Japanese deck print of the Evolving Skies card.",
+  "artNote": "Stand-in: showing the English Evolving Skies print of this same card. The Japanese text and layout differ."
+ },
+ {
+  "page": 6,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (JP Start Deck)",
+  "id": "slk-sdbc-583",
+  "name": "Start Deck 100 Battle Collection (JP)",
+  "number": "583/742",
+  "finish": "Japanese Deck",
+  "owned": false,
+  "era": "SV Era (2025)",
+  "img": "https://images.pokemontcg.io/sv8/147_hires.png",
+  "notes": "Japanese deck print of the Slaking ex card.",
+  "artNote": "Stand-in: showing the English Surging Sparks Slaking ex print of this same card. The Japanese text and layout differ."
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (Future)",
+  "id": "slk-p6-r3-left",
+  "name": "Future Release Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Reserved for a future Slaking release."
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (Future)",
+  "id": "slk-p6-r3-center",
+  "name": "Future Release Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Reserved for a future Slaking release."
+ },
+ {
+  "page": 6,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Future)",
+  "id": "slk-p6-r3-right",
+  "name": "Future Release Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Reserved for a future Slaking release."
+ },
+ {
+  "page": 7,
+  "row": 1,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "slk-1st-adv",
+  "name": "ADV Expansion Pack (JP) 1st Ed",
+  "number": "043/055 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "ADV Era (2003)",
+  "img": "https://static.tcgcollector.com/content/images/5e/7c/81/5e7c817349393532b14f5ea191cbfe7838eb33f56e1f95bbe27446af39793109.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 1,
+  "col": "center",
+  "colLabel": "Center (1st Ed)",
+  "id": "slk-1st-clash",
+  "name": "Clash of the Blue Sky (JP) 1st Ed",
+  "number": "059/082 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "PCG Era (2005)",
+  "img": "https://static.tcgcollector.com/content/images/aa/0c/1f/aa0c1fbe506399f42f18afebad3e97c04ee5487cd19bce70cab250054464246c.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 1,
+  "col": "right",
+  "colLabel": "Right (1st Ed)",
+  "id": "slk-1st-world",
+  "name": "World Champions Pack (JP) 1st Ed",
+  "number": "071/108 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "PCG Era (2007)",
+  "img": "https://static.tcgcollector.com/content/images/5e/61/ed/5e61ed5e1f25e6be20d943fd5efb9944733af5b85298dac8e28edb4e6b3f5cfb.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 2,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "slk-1st-secret",
+  "name": "Secret of the Lakes (JP) 1st Ed",
+  "number": "Unnumbered 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "DP Era (2007)",
+  "img": "https://images.pokemontcg.io/dp2/34_hires.png",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Stand-in: showing the English Mysterious Treasures print of this same card.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 2,
+  "col": "center",
+  "colLabel": "Center (1st Ed)",
+  "id": "slk-1st-galactic's",
+  "name": "Galactic's Conquest (JP) 1st Ed",
+  "number": "074/096 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "Pt Era (2008)",
+  "img": "https://static.tcgcollector.com/content/images/07/37/00/073700f81de365d59c2da93459c4bcaf7db546590ee80cd35cb6d3899742b393.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 2,
+  "col": "right",
+  "colLabel": "Right (1st Ed)",
+  "id": "slk-1st-dragon",
+  "name": "Dragon Blade (JP) 1st Ed",
+  "number": "043/050 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "BW Era (2012)",
+  "img": "https://static.tcgcollector.com/content/images/36/81/7d/36817d2d0198fad71d7985c030f2e5c3aad667ce251bc515f1734ae8be9406f2.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 3,
+  "col": "left",
+  "colLabel": "Left (1st Ed)",
+  "id": "slk-1st-rising",
+  "name": "Rising Fist (JP) 1st Ed",
+  "number": "078/096 1st",
+  "finish": "1st Edition (JP)",
+  "owned": false,
+  "era": "XY Era (2014)",
+  "img": "https://static.tcgcollector.com/content/images/77/d3/fe/77d3fe5fb6bd746e23eee44a2e0fecda97f6bafec77feaec4ef9c7655ba7e05b.jpg",
+  "notes": "Optional 1st Edition print.",
+  "artNote": "Image may show the Unlimited print, so the 1st Edition mark may not appear.",
+  "is1stEd": true
+ },
+ {
+  "page": 7,
+  "row": 3,
+  "col": "center",
+  "colLabel": "Center (Open)",
+  "id": "slk-1st-open-c",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket on the 1st Edition page."
+ },
+ {
+  "page": 7,
+  "row": 3,
+  "col": "right",
+  "colLabel": "Right (Open)",
+  "id": "slk-1st-open-r",
+  "name": "Open Slot",
+  "number": "N/A",
+  "finish": "Open Pocket",
+  "owned": true,
+  "era": "N/A",
+  "img": "",
+  "isOpen": true,
+  "notes": "Open pocket on the 1st Edition page."
+ }
+];
+
+    // Market prices: Near Mint USD snapshot, Oct 22, 2026 (not live)
+    const PRICE_AS_OF = 'Oct 22, 2026';
+    const PI = 'PokeInvesting (TCGplayer sales)', PM = 'Pack Magik', HB = 'Hobby Bin (TCGplayer)';
+    const PRICES = {
+      'ex1-45': [3.40, PI], 'ex1-45-rh': [25.00, PI],
+      'ex2-80': [1.24, PI], 'ex2-80-rh': [32.39, PI],
+      'ex8-73': [1.58, PI], 'ex8-73-rh': [30.00, PI],
+      'ex16-63': [1.53, PI], 'ex16-63-rh': [28.50, PI],
+      'dp2-99': [6.69, PI], 'dp2-99-rh': [73.60, PI],
+      'pl1-95': [0.59, PI], 'pl1-95-rh': [3.25, PI],
+      'bw5-101': [0.40, PI], 'bw5-101-rh': [5.00, PI],
+      'xy3-81': [0.30, PI], 'xy3-81-rh': [0.58, PI],
+      'xy-kit-15': [2.41, PI], 'xy-kit-26': [5.56, PI],
+      'sm7-113': [0.26, PI], 'sm7-113-rh': [0.47, PI],
+      'sm11-167': [0.33, PI], 'sm11-167-rh': [0.49, PI],
+      'sm11-168': [0.29, PI], 'sm11-168-rh': [0.39, PI],
+      'swsh7-129': [0.10, PI], 'swsh7-129-rh': [0.23, PI],
+      'sv2-160': [0.13, PI], 'sv2-160-rh': [0.23, PI],
+      'sv8-145': [0.11, PI], 'sv8-145-rh': [0.20, PI],
+      'sv8-212-ir': [9.85, PI],
+      'adv1-041': [7.03, PM], 'pcg2-057': [3.79, PM], 'wcp-069': [59.95, PM],
+      'dp3-secret': [2.74, PM], 'pt1-072': [2.33, PM], 'bw5-041': [3.00, PM],
+      'xy3-076': [2.99, PM], 'sm6b-049': [2.01, PM], 'sm11a-073': [1.98, PM],
+      'sm11a-074': [2.15, PM], 's7r-050': [0.28, PM], 'sv2p-060': [0.50, PM],
+      'sv8-117-ar': [3.23, PM],
+      'sd100-344': [3.00, 'Hobby Bin (listed as Mirror Holofoil)'], 'sd100-581': [0.99, HB],
+      'adv1-041-1st': [3.00, PM], 'pcg2-057-1st': [3.15, PM], 'wcp-069-1st': [19.85, PM],
+      'pt1-072-1st': [3.00, PI], 'bw5-041-1st': [2.49, PM], 'xy3-076-1st': [2.70, PM]
+      // No recent sales found: latias-009, dp3-secret-1st, sv8-082
+    };
+    const VIG_PRICES = {"vig-ex1-47": [1.27, "PokeInvesting (TCGplayer sales)"], "vig-ex1-47-rh": [9.67, "PokeInvesting (TCGplayer sales)"], "vig-ex2-52": [1.05, "PokeInvesting (TCGplayer sales)"], "vig-ex2-52-rh": [7.66, "PokeInvesting (TCGplayer sales)"], "vig-ex8-50": [1.22, "PokeInvesting (TCGplayer sales)"], "vig-ex8-50-rh": [41.47, "PokeInvesting (TCGplayer sales)"], "vig-ex16-41": [0.9, "PokeInvesting (TCGplayer sales)"], "vig-ex16-41-rh": [19.33, "PokeInvesting (TCGplayer sales)"], "vig-dp2-68": [0.49, "PokeInvesting (TCGplayer sales)"], "vig-dp2-68-rh": [2.58, "PokeInvesting (TCGplayer sales)"], "vig-pl1-64": [0.47, "PokeInvesting (TCGplayer sales)"], "vig-pl1-64-rh": [2.53, "PokeInvesting (TCGplayer sales)"], "vig-bw6-102": [0.35, "PokeInvesting (TCGplayer sales)"], "vig-bw6-102-rh": [1.04, "PokeInvesting (TCGplayer sales)"], "vig-xy3-82": [0.32, "PokeInvesting (TCGplayer sales)"], "vig-xy3-82-rh": [0.52, "PokeInvesting (TCGplayer sales)"], "vig-kit-4": [1.36, "PokeInvesting (TCGplayer sales)"], "vig-kit-28": [1.5, "PokeInvesting (TCGplayer sales)"], "vig-sm7-114": [0.26, "PokeInvesting (TCGplayer sales)"], "vig-sm7-114-rh": [0.48, "PokeInvesting (TCGplayer sales)"], "vig-jp-champion-road-050": [1.0, "TCG Collector"], "vig-sm11-169": [0.21, "PokeInvesting (TCGplayer sales)"], "vig-sm11-169-rh": [0.54, "PokeInvesting (TCGplayer sales)"], "vig-jp-miracle-twin-075": [0.32, "TCG Collector"], "vig-swsh7-130": [0.07, "PokeInvesting (TCGplayer sales)"], "vig-swsh7-130-rh": [0.26, "PokeInvesting (TCGplayer sales)"], "vig-jp-skyscraping-perfection-051": [0.18, "TCG Collector"], "vig-sv2-161": [0.12, "PokeInvesting (TCGplayer sales)"], "vig-sv2-161-rh": [0.26, "PokeInvesting (TCGplayer sales)"], "vig-jp-snow-hazard-061": [0.08, "TCG Collector"], "vig-sv8-146": [0.08, "PokeInvesting (TCGplayer sales)"], "vig-sv8-146-rh": [0.26, "PokeInvesting (TCGplayer sales)"], "vig-jp-super-electric-breaker-083": [0.09, "TCG Collector"]};
+    const SLK_PRICES = {"slk-ex1-12": [22.29, "PokeInvesting (TCGplayer sales)"], "slk-ex1-12-rh": [28.98, "PokeInvesting (TCGplayer sales)"], "slk-jp-adv-expansion-pack-043": [6.92, "Pack Magik"], "slk-ex8-15": [26.0, "PokeInvesting (TCGplayer sales)"], "slk-ex8-15-rh": [39.99, "PokeInvesting (TCGplayer sales)"], "slk-jp-clash-of-the-blue-sky-059": [8.8, "Pack Magik"], "slk-ex16-13": [8.48, "PokeInvesting (TCGplayer sales)"], "slk-ex16-13-rh": [17.14, "PokeInvesting (TCGplayer sales)"], "slk-jp-world-champions-pack-071": [6.7, "Pack Magik"], "slk-dp2-34": [1.06, "PokeInvesting (TCGplayer sales)"], "slk-dp2-34-rh": [1.89, "PokeInvesting (TCGplayer sales)"], "slk-jp-secret-of-the-lakes-nn": [2.19, "Pack Magik"], "slk-pl1-16": [4.85, "PokeInvesting (TCGplayer sales)"], "slk-pl1-16-rh": [6.64, "PokeInvesting (TCGplayer sales)"], "slk-jp-galactics-conquest-074": [1.17, "Pack Magik"], "slk-bw6-103": [1.8, "PokeInvesting (TCGplayer sales)"], "slk-bw6-103-rh": [2.01, "PokeInvesting (TCGplayer sales)"], "slk-jp-dragon-blade-043": [2.69, "Pack Magik"], "slk-xy3-83": [0.7, "PokeInvesting (TCGplayer sales)"], "slk-xy3-83-rh": [0.87, "PokeInvesting (TCGplayer sales)"], "slk-jp-rising-fist-078": [2.45, "Pack Magik"], "slk-sm7-115": [5.36, "PokeInvesting (TCGplayer sales)"], "slk-sm7-115-rh": [5.28, "PokeInvesting (TCGplayer sales)"], "slk-jp-champion-road-051": [2.24, "Pack Magik"], "slk-det1-18": [1.34, "PokeInvesting (TCGplayer sales)"], "slk-jp-gdp-024": [2.46, "Pack Magik"], "slk-sm11-170": [0.66, "PokeInvesting (TCGplayer sales)"], "slk-sm11-170-rh": [0.77, "PokeInvesting (TCGplayer sales)"], "slk-jp-miracle-twin-076": [1.96, "Pack Magik"], "slk-swsh7-131": [0.27, "PokeInvesting (TCGplayer sales)"], "slk-swsh7-131-rh": [0.34, "PokeInvesting (TCGplayer sales)"], "slk-jp-skyscraping-perfection-052": [1.48, "Pack Magik"], "slk-sv2-162": [0.19, "PokeInvesting (TCGplayer sales)"], "slk-sv2-162-rh": [0.3, "PokeInvesting (TCGplayer sales)"], "slk-jp-snow-hazard-062": [1.36, "Pack Magik"], "slk-pgo-58": [0.59, "PokeInvesting (TCGplayer sales)"], "slk-jp-pgo-059": [1.3, "Pack Magik"], "slk-pgo-77": [1.71, "PokeInvesting (TCGplayer sales)"], "slk-jp-pgo-079": [4.22, "Pack Magik"], "slk-sv8-147": [0.55, "PokeInvesting (TCGplayer sales)"], "slk-jp-seb-084": [1.28, "Pack Magik"], "slk-sv8-227": [0.89, "PokeInvesting (TCGplayer sales)"], "slk-jp-seb-126": [3.26, "Pack Magik"], "slk-1st-adv": [8.0, "Pack Magik"], "slk-1st-clash": [7.21, "Pack Magik"], "slk-1st-world": [12.29, "Pack Magik"], "slk-1st-dragon": [2.98, "Pack Magik"], "slk-1st-rising": [3.88, "Pack Magik"]};
+    [[slakothData, PRICES], [vigorothData, VIG_PRICES], [slakingData, SLK_PRICES]].forEach(([data, prices]) =>
+      data.forEach(c => { const p = prices[c.id]; c.price = p ? p[0] : null; c.priceSrc = p ? p[1] : null; }));
+
+    // The three binders in the evolution line
+    const SETS = {
+      slakoth: { key: 'slakoth', label: 'Slakoth', dex: '#0287', stage: 'Basic', data: slakothData, corePages: 6, firstPage: 7,
+        storeKey: 'slakoth-binder-owned-v1',
+        layout: 'Left = EN Normal • Center = EN Reverse Holo • Right = Japanese Copy.',
+        noteTitle: 'Checklist Corrections',
+        note: 'Added XY Trainer Kit #15 & #26 (Page 3). The missing #3 was a numbering slip, not a missing card.' },
+      vigoroth: { key: 'vigoroth', label: 'Vigoroth', dex: '#0288', stage: 'Stage 1', data: vigorothData, corePages: 5, firstPage: 6,
+        storeKey: 'vigoroth-binder-owned-v1',
+        layout: 'Left = EN Normal • Center = EN Reverse Holo • Right = Japanese Copy.',
+        noteTitle: 'Set Notes',
+        note: 'XY Trainer Kit #4 & #28 sit on Page 3. Every card starts as Needed; tap a card to mark it owned.' },
+      slaking: { key: 'slaking', label: 'Slaking', dex: '#0289', stage: 'Stage 2', data: slakingData, corePages: 6, firstPage: 7,
+        storeKey: 'slaking-binder-owned-v1',
+        layout: 'Left = EN Holo/Normal • Center = EN Reverse Holo • Right = Japanese Copy.',
+        noteTitle: 'Set Notes',
+        note: 'Slaking V, Slaking ex and Detective Pikachu have no Reverse Holo, so their center pocket stays empty. Every card starts as Needed.' }
+    };
+    const SET_ORDER = ['slakoth', 'vigoroth', 'slaking'];
+    let SET = SETS.slakoth;
+    let binderData = SET.data;
+    Object.values(SETS).forEach(st => st.data.forEach(c => c._set = st.key));
+    const fmtPrice = v => v == null ? null : '$' + (v >= 10 ? v.toFixed(0) : v.toFixed(2));
+    function lookupQuery(c) {
+      return `${SETS[c._set || SET.key].label} ${c.name.replace(' (JP)', ' japanese').replace(' 1st Ed', ' 1st edition')} ${c.number.replace(' RH', ' reverse holo').replace(' 1st', '')}`;
+    }
+
+    let currentFilter = 'all';
+    let selectedCardId = null;
+    // Remember owned toggles on this device, one record per binder
+    function loadOwned() {
+      Object.values(SETS).forEach(st => {
+        try {
+          const saved = JSON.parse(localStorage.getItem(st.storeKey) || '{}');
+          st.data.forEach(c => { if (!c.isOpen && c.id in saved) c.owned = !!saved[c.id]; });
+        } catch (e) {}
+      });
+    }
+    function saveOwned(st = SET) {
+      try {
+        const map = {};
+        st.data.forEach(c => { if (!c.isOpen) map[c.id] = c.owned; });
+        localStorage.setItem(st.storeKey, JSON.stringify(map));
+      } catch (e) {}
+    }
+
+    // Set switcher (the title button)
+    function setStats(st) {
+      const real = st.data.filter(c => !c.isOpen);
+      const core = real.filter(c => c.page <= st.corePages);
+      return { total: real.length, core: core.length, coreOwned: core.filter(c => c.owned).length,
+               owned: real.filter(c => c.owned).length, pages: Math.max(...st.data.map(c => c.page)) };
+    }
+    function renderSetMenu() {
+      document.getElementById('set-menu').innerHTML =
+        `<div class="px-2 pt-1 pb-1.5 text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Evolution line</div>` +
+        SET_ORDER.map((k, i) => {
+          const st = SETS[k], x = setStats(st), on = k === SET.key;
+          const pct = Math.round(x.coreOwned / x.core * 100);
+          return `<button role="menuitem" onclick="switchSet('${k}')" class="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-left ${on ? 'bg-amber-500/15 border border-amber-500/40' : 'border border-transparent hover:bg-slate-800'}">
+            <span class="w-8 shrink-0 text-center font-mono text-[10px] text-slate-500">${st.dex}</span>
+            <span class="min-w-0 flex-1">
+              <span class="flex items-center gap-1.5 text-sm font-bold ${on ? 'text-amber-300' : 'text-slate-100'}">${st.label}${i < 2 ? '' : ''}
+                <span class="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">${st.stage}</span>${x.coreOwned === x.core ? '<span class="complete-chip text-[9px] font-extrabold px-1.5 py-0.5 rounded">Complete</span>' : ''}</span>
+              <span class="block mt-1 h-1 rounded-full bg-slate-800 overflow-hidden"><span class="block h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${pct}%"></span></span>
+            </span>
+            <span class="shrink-0 text-[11px] font-mono text-emerald-400">${x.coreOwned}/${x.core}</span>
+          </button>`;
+        }).join('');
+    }
+    function toggleSetMenu(force) {
+      const menu = document.getElementById('set-menu');
+      const open = force !== undefined ? force : menu.classList.contains('hidden');
+      if (open) renderSetMenu();
+      menu.classList.toggle('hidden', !open);
+      document.getElementById('set-switch-btn').setAttribute('aria-expanded', open);
+    }
+    function switchSet(key, keepScroll) {
+      if (!SETS[key]) return;
+      SET = SETS[key];
+      binderData = SET.data;
+      try { localStorage.setItem('slakoth-line-current-set', key); } catch (e) {}
+      toggleSetMenu(false);
+      closeModal();
+      applySetChrome();
+      setFilter('all');
+      updateProgress();
+      if (!keepScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function applySetChrome() {
+      const x = setStats(SET);
+      document.getElementById('set-title').innerHTML = `${SET.label}<span class="hidden sm:inline"> Master Set</span>`;
+      document.getElementById('set-count-pill').innerText = `${x.total} Cards`;
+      document.getElementById('page-sides').innerText = `${x.pages} Page Sides`;
+      document.getElementById('count-all').innerText = x.total;
+      document.getElementById('core-pages').innerText = SET.corePages;
+      document.getElementById('first-page').innerText = SET.firstPage;
+      document.getElementById('core-total').innerText = x.core;
+      document.getElementById('banner-layout').innerText = SET.layout;
+      document.getElementById('banner-note-title').innerText = SET.noteTitle;
+      document.getElementById('banner-note').innerText = SET.note;
+      document.getElementById('banner-first').innerText = `Page ${SET.firstPage} holds the 7 Japanese 1st Edition prints (2001-2016 era). Tracked separately.`;
+      document.title = `${SET.label} Binder`;
+      document.getElementById('page-jump').innerHTML = Array.from({ length: x.pages }, (_, i) => i + 1).map(n =>
+        n === SET.firstPage
+          ? `<button onclick="scrollToPage(${n})" class="w-6 h-6 rounded bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 flex items-center justify-center font-mono text-[11px] border border-amber-500/30 shrink-0">P${n}</button>`
+          : `<button onclick="scrollToPage(${n})" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-mono text-[11px] shrink-0">P${n}</button>`).join('');
+    }
+
+    function isVisible(card) {
+      if (currentFilter === 'owned') return !card.isOpen && card.owned;
+      if (currentFilter === 'needed') return !card.isOpen && !card.owned;
+      return true;
+    }
+
+    // Card artwork: real image first; mockup drawing or placeholder if it fails
+    function artHtml(card, big) {
+      const dim = !big && !card.owned ? 'opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-80 transition duration-300' : '';
+      const q = encodeURIComponent(`${SETS[card._set || SET.key].label} ${card.name.replace(' (JP)','').replace(' 1st Ed','')} ${card.number.replace(' RH','').replace(' 1st','')} pokemon card`);
+      const fallback = `<div class="text-center p-2 flex flex-col items-center gap-1">
+          <i data-lucide="image-off" class="w-5 h-5 text-slate-600"></i>
+          <span class="text-[9px] sm:text-[10px] text-slate-400 leading-tight">Image didn't load</span>
+          <a href="https://www.google.com/search?tbm=isch&q=${q}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[9px] sm:text-[10px] text-amber-400 underline">Look it up</a>
+        </div>`;
+      const standIn = card.artNote && card.artNote.startsWith('Stand-in')
+        ? `<span class="absolute top-1 right-1 bg-sky-500/90 text-slate-950 font-bold text-[8px] px-1 py-0.5 rounded">Stand-in</span>` : '';
+      if (!card.img) return fallback;
+      return `<img src="${card.img}" alt="${card.name} ${card.number}" loading="lazy" class="h-full ${big ? 'w-full' : ''} object-contain ${dim}" onerror="this.hidden=true;this.nextElementSibling.hidden=false;window.lucide&&lucide.createIcons()"><div hidden>${fallback}</div>${standIn}`;
+    }
+
+    // Theme: Auto follows the device; Light and Dark override it
+    const THEME_MODES = ['auto', 'light', 'dark'];
+    const THEME_ICONS = { auto: 'sun-moon', light: 'sun', dark: 'moon' };
+    let themeMode = 'auto';
+    try { const t = localStorage.getItem('slakoth-line-theme'); if (THEME_MODES.includes(t)) themeMode = t; } catch (e) {}
+    function applyTheme() {
+      const root = document.documentElement;
+      if (themeMode === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', themeMode);
+      const btn = document.getElementById('theme-btn');
+      if (btn) {
+        const label = `Theme: ${themeMode[0].toUpperCase() + themeMode.slice(1)}`;
+        btn.setAttribute('aria-label', label); btn.title = label;
+        btn.innerHTML = `<i data-lucide="${THEME_ICONS[themeMode]}" class="w-4 h-4"></i>`;
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+    function cycleTheme() {
+      themeMode = THEME_MODES[(THEME_MODES.indexOf(themeMode) + 1) % THEME_MODES.length];
+      try { localStorage.setItem('slakoth-line-theme', themeMode); } catch (e) {}
+      applyTheme();
+    }
+
+    // ---------- Shared helpers for the tools ----------
+    const findAny = id => { for (const k of SET_ORDER) { const c = SETS[k].data.find(x => x.id === id); if (c) return c; } return null; };
+    const esc = t => String(t).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    const money = v => '$' + v.toFixed(2);
+    const sumPrice = arr => arr.reduce((t, c) => t + (c.price || 0), 0);
+    const thumb = c => `<div class="w-9 h-12 shrink-0 rounded bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">${c.img ? `<img src="${c.img}" alt="" loading="lazy" class="w-full h-full object-contain" onerror="this.hidden=true">` : ''}</div>`;
+    function goToCard(id) {
+      const c = findAny(id); if (!c) return;
+      closeSheet();
+      if (c._set !== SET.key) switchSet(c._set, true);
+      if (!isVisible(c) || (currentFilter === 'core' && c.page > SET.corePages) || (currentFilter === '1st' && c.page !== SET.firstPage)) setFilter('all');
+      openModal(id);
+    }
+
+    // ---------- Completion: every version of a card in its pocket row ----------
+    function rowGroup(card) {
+      const st = SETS[card._set || SET.key];
+      if (card.isOpen || card.page === st.firstPage || /Trainer Kit|Japanese Deck/.test(card.finish)) return null;
+      const mates = st.data.filter(c => c.page === card.page && c.row === card.row && !c.isOpen && !/Trainer Kit|Japanese Deck/.test(c.finish));
+      return mates.length >= 2 ? mates : null;
+    }
+    function rowComplete(card) { const g = rowGroup(card); return !!g && g.every(c => c.owned); }
+    function isRowLead(card) { const g = rowGroup(card); return !!g && g[0].id === card.id; }
+    function pageComplete(st, page) { const r = st.data.filter(c => c.page === page && !c.isOpen); return r.length > 0 && r.every(c => c.owned); }
+    function coreComplete(st) { const r = st.data.filter(c => c.page <= st.corePages && !c.isOpen); return r.every(c => c.owned); }
+
+    let celebrateTimer = null;
+    function celebrate(title, sub) {
+      const el = document.getElementById('celebrate');
+      document.getElementById('celebrate-title').innerText = title;
+      document.getElementById('celebrate-sub').innerText = sub;
+      const colors = ['--a300', '--a500', '--g400', '--p400', '--t400'];
+      document.getElementById('celebrate-burst').innerHTML = Array.from({ length: 16 }, (_, i) => {
+        const ang = (i / 16) * Math.PI * 2, dist = 46 + (i % 3) * 16;
+        return `<i style="background: rgb(var(${colors[i % colors.length]})); --dx: ${Math.round(Math.cos(ang) * dist * 1.8)}px; --dy: ${Math.round(Math.sin(ang) * dist)}px"></i>`;
+      }).join('');
+      if (window.lucide) lucide.createIcons();
+      el.classList.remove('hide'); el.classList.add('show');
+      clearTimeout(celebrateTimer);
+      celebrateTimer = setTimeout(() => { el.classList.remove('show'); el.classList.add('hide'); }, 3200);
+    }
+    function checkMilestones(card, before) {
+      if (!card.owned) return;
+      const st = SETS[card._set || SET.key];
+      if (!before.core && coreComplete(st)) return celebrate(`${st.label} binder complete!`, `Every core card is in the binder.`);
+      if (!before.page && pageComplete(st, card.page)) return celebrate(`Page ${card.page} complete!`, `${st.label} binder, every pocket filled.`);
+      if (!before.row && rowComplete(card)) {
+        const g = rowGroup(card);
+        return celebrate('Card complete!', `${g[0].name}: all ${g.length} versions owned.`);
+      }
+    }
+
+    // ---------- Card show mode ----------
+    function openShowMode() {
+      toggleToolsMenu(false);
+      document.getElementById('show-mode').classList.remove('hidden');
+      const input = document.getElementById('show-input');
+      input.value = ''; renderShow('');
+      setTimeout(() => input.focus(), 50);
+    }
+    function closeShowMode() { document.getElementById('show-mode').classList.add('hidden'); }
+    function renderShow(q, forcedId) {
+      const box = document.getElementById('show-result');
+      if (!forcedId && !q.trim()) {
+        box.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center text-slate-500 gap-2 pb-16">
+          <i data-lucide="scan-search" class="w-10 h-10 text-slate-700"></i>
+          <p class="text-sm max-w-xs">Type the number printed on the card, like <span class="font-mono text-slate-300">80/100</span>, or a set name.</p></div>`;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+      let hits = findCards(q);
+      if (forcedId) { const f = findAny(forcedId); if (f) hits = [f, ...hits.filter(c => c.id !== forcedId)]; }
+      if (!hits.length) { box.innerHTML = `<p class="text-center text-slate-400 text-base mt-10">Not in your binders.<br><span class="text-sm text-slate-500">Check the number, or try the set name.</span></p>`; return; }
+      const top = hits[0];
+      const big = top.owned
+        ? `<div class="rounded-3xl border-2 border-emerald-500/60 bg-emerald-500/10 p-5 text-center"><div class="text-6xl sm:text-7xl font-extrabold text-emerald-400 font-heading tracking-tight">HAVE</div><div class="text-sm text-emerald-300/80 mt-1">${rowComplete(top) ? 'All versions of this card owned' : 'Already in your binder'}</div></div>`
+        : `<div class="rounded-3xl border-2 border-amber-500/70 bg-amber-500/10 p-5 text-center"><div class="text-6xl sm:text-7xl font-extrabold text-amber-300 font-heading tracking-tight">NEED</div><div class="text-sm text-amber-200/80 mt-1">${top.price != null ? `Market about ${money(top.price)} (NM)` : 'No recent sales price'}</div></div>`;
+      const others = hits.slice(1, 12).map(c => `
+        <button onclick="renderShow(document.getElementById('show-input').value, '${c.id}')" class="w-full flex items-center gap-3 py-2.5 text-left border-t border-slate-800">
+          ${thumb(c)}
+          <span class="min-w-0 flex-1"><span class="block text-sm font-semibold text-slate-100 truncate">${SETS[c._set].label} • ${esc(c.name)}</span><span class="block text-xs font-mono text-slate-400 truncate">${esc(c.number)} • ${esc(c.finish)}</span></span>
+          <span class="shrink-0 text-sm font-extrabold ${c.owned ? 'text-emerald-400' : 'text-amber-300'}">${c.owned ? 'HAVE' : 'NEED'}</span>
+        </button>`).join('');
+      box.innerHTML = `${big}
+        <div class="mt-4 flex items-center gap-4">
+          <div class="w-24 sm:w-28 aspect-[63/88] shrink-0 rounded-xl border border-slate-700 bg-slate-900 overflow-hidden flex items-center justify-center relative">${artHtml({ ...top, owned: true }, true)}</div>
+          <div class="min-w-0">
+            <div class="text-xs font-semibold text-sky-300">${SETS[top._set].label}</div>
+            <div class="text-lg font-bold text-white leading-tight">${esc(top.name)}</div>
+            <div class="text-base font-mono text-slate-300">${esc(top.number)}</div>
+            <div class="text-sm text-slate-400">${esc(top.finish)}</div>
+            <div class="text-xs text-slate-500 mt-1">Page ${top.page} • Row ${top.row}</div>
+          </div>
+        </div>
+        ${others ? `<div class="mt-5"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Other matches</div>${others}</div>` : ''}`;
+      if (window.lucide) lucide.createIcons();
+    }
+    // ---------- Tools menu ----------
+    function toggleToolsMenu(force) {
+      const menu = document.getElementById('tools-menu');
+      const open = force !== undefined ? force : menu.classList.contains('hidden');
+      if (open) {
+        const item = (fn, icon, label, sub) => `<button role="menuitem" onclick="${fn}" class="w-full flex items-center gap-3 px-2.5 py-2 rounded-lg text-left hover:bg-slate-800">
+            <i data-lucide="${icon}" class="w-4 h-4 text-amber-300 shrink-0"></i>
+            <span class="min-w-0"><span class="block text-sm font-semibold text-slate-100">${label}</span><span class="block text-[11px] text-slate-500">${sub}</span></span></button>`;
+        menu.innerHTML = item("openShowMode()", 'scan-search', 'Card show mode', 'Big HAVE or NEED check')
+          + item("openShopping()", 'shopping-basket', 'Shopping list', 'Needed cards, cheapest first')
+          + item("openValue()", 'gem', 'Collection value', 'What you own and what is left')
+          + item("toggleToolsMenu(false);startCompare(true)", 'columns-2', 'Compare cards', 'Two cards side by side')
+          + item("toggleSwipe()", swipeMode ? 'rows-3' : 'gallery-horizontal', swipeMode ? 'Scroll pages' : 'Swipe pages', swipeMode ? 'Back to one long scroll' : 'One binder page at a time')
+          + `<div class="my-1 border-t border-slate-800"></div>`
+          + (CAN_OFFLINE ? item("openOffline()", 'wifi-off', 'Offline for card shows', 'Save every card image') : '')
+          + item("openBackup()", 'shield-check', 'Backup & restore', 'Save your checkmarks as a code');
+        if (window.lucide) lucide.createIcons();
+      }
+      menu.classList.toggle('hidden', !open);
+      document.getElementById('tools-btn').setAttribute('aria-expanded', open);
+    }
+
+    // ---------- Slide-up panel ----------
+    function openSheet(title, html) {
+      toggleToolsMenu(false);
+      document.getElementById('sheet-title').innerText = title;
+      document.getElementById('sheet-body').innerHTML = html;
+      const sh = document.getElementById('sheet');
+      sh.classList.remove('hidden'); sh.setAttribute('aria-hidden', 'false');
+      document.getElementById('sheet-body').scrollTop = 0;
+      if (window.lucide) lucide.createIcons();
+    }
+    function closeSheet() {
+      const sh = document.getElementById('sheet');
+      sh.classList.add('hidden'); sh.setAttribute('aria-hidden', 'true');
+    }
+
+    // ---------- 1. Backup & restore ----------
+    function makeBackupCode() {
+      const owned = {};
+      SET_ORDER.forEach(k => { owned[k] = SETS[k].data.filter(c => !c.isOpen && c.owned).map(c => c.id); });
+      return 'SLKLINE1:' + btoa(unescape(encodeURIComponent(JSON.stringify({ v: 1, saved: new Date().toISOString().slice(0, 10), owned }))));
+    }
+    function openBackup() {
+      const code = makeBackupCode();
+      const counts = SET_ORDER.map(k => `${SETS[k].label} ${SETS[k].data.filter(c => !c.isOpen && c.owned).length}`).join(' • ');
+      openSheet('Backup & restore', `
+        <p class="text-slate-400 text-xs leading-relaxed">Your checkmarks live only in this browser. Copy this code somewhere safe (Notes, a text to yourself). Paste it back on any device to restore.</p>
+        <label for="backup-out" class="block mt-3 mb-1 text-[11px] uppercase tracking-wider font-semibold text-slate-500">Your backup code</label>
+        <textarea id="backup-out" readonly rows="3" class="w-full font-mono text-[11px] bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-slate-300 resize-none break-all">${code}</textarea>
+        <div class="flex items-center justify-between gap-2 mt-2">
+          <span class="text-[11px] text-slate-500">${counts} owned</span>
+          <button id="backup-copy" onclick="copyBackup()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-semibold">Copy code</button>
+        </div>
+        <div class="mt-5 pt-4 border-t border-slate-800">
+          <label for="backup-in" class="block mb-1 text-[11px] uppercase tracking-wider font-semibold text-slate-500">Restore from a code</label>
+          <textarea id="backup-in" rows="3" placeholder="Paste a code that starts with SLKLINE1:" class="w-full font-mono text-[11px] bg-slate-950 border border-slate-700 focus:border-amber-500/70 outline-none rounded-xl p-2.5 text-slate-200 resize-none break-all"></textarea>
+          <div id="restore-area" class="mt-2 flex justify-end">
+            <button onclick="checkRestore()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 text-xs font-semibold">Restore</button>
+          </div>
+          <p id="restore-msg" class="mt-2 text-xs"></p>
+        </div>`);
+    }
+    function copyBackup() {
+      const ta = document.getElementById('backup-out'), btn = document.getElementById('backup-copy');
+      const done = () => { btn.innerText = 'Copied'; setTimeout(() => { btn.innerText = 'Copy code'; }, 1800); };
+      const fallback = () => { ta.focus(); ta.select(); btn.innerText = 'Selected, now copy'; };
+      try { navigator.clipboard.writeText(ta.value).then(done, fallback); } catch (e) { fallback(); }
+    }
+    let pendingRestore = null;
+    function parseBackup(text) {
+      const t = text.trim();
+      if (!t.startsWith('SLKLINE1:')) throw new Error('That code does not start with SLKLINE1:. Copy the whole code and try again.');
+      const data = JSON.parse(decodeURIComponent(escape(atob(t.slice(9)))));
+      if (!data || data.v !== 1 || typeof data.owned !== 'object') throw new Error('That code is damaged. Copy it again from the original device.');
+      return data;
+    }
+    function checkRestore() {
+      const msg = document.getElementById('restore-msg');
+      try {
+        pendingRestore = parseBackup(document.getElementById('backup-in').value);
+        const n = Object.values(pendingRestore.owned).reduce((t, a) => t + (Array.isArray(a) ? a.length : 0), 0);
+        document.getElementById('restore-area').innerHTML = `
+          <div class="w-full rounded-xl border border-amber-500/40 bg-amber-500/10 p-2.5">
+            <p class="text-xs text-slate-200">Replace the checkmarks on this device with this backup${pendingRestore.saved ? ` from ${pendingRestore.saved}` : ''} (${n} owned cards)?</p>
+            <div class="flex justify-end gap-2 mt-2">
+              <button onclick="openBackup()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 text-xs font-semibold">Cancel</button>
+              <button onclick="applyRestore()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-semibold">Replace</button>
+            </div>
+          </div>`;
+        msg.innerText = '';
+      } catch (e) {
+        msg.className = 'mt-2 text-xs text-amber-400';
+        msg.innerText = e.message && e.message.startsWith('That code') ? e.message : 'That code could not be read. Copy the whole code and try again.';
+      }
+    }
+    function applyRestore() {
+      if (!pendingRestore) return;
+      SET_ORDER.forEach(k => {
+        const ids = new Set(pendingRestore.owned[k] || []);
+        SETS[k].data.forEach(c => { if (!c.isOpen) c.owned = ids.has(c.id); });
+        saveOwned(SETS[k]);
+      });
+      pendingRestore = null;
+      updateProgress(); renderBinder(); openBackup();
+      const msg = document.getElementById('restore-msg');
+      msg.className = 'mt-2 text-xs text-emerald-400';
+      msg.innerText = 'Restored. Your checkmarks now match the backup.';
+    }
+
+    // ---------- 2. Shopping list ----------
+    let shopScope = 'current', shopMax = 0, shopFirst = false;
+    function openShopping() {
+      const scopeSets = shopScope === 'all' ? SET_ORDER.map(k => SETS[k]) : [SET];
+      let cards = scopeSets.flatMap(st => st.data.filter(c => !c.isOpen && !c.owned && (shopFirst || c.page !== st.firstPage)));
+      const allNeeded = cards.slice();
+      if (shopMax) cards = cards.filter(c => c.price != null && c.price <= shopMax);
+      cards.sort((a, b) => (a.price == null) - (b.price == null) || (a.price || 0) - (b.price || 0));
+      const chip = (on, fn, label) => `<button onclick="${fn}" class="px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${on ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">${label}</button>`;
+      const unpriced = allNeeded.filter(c => c.price == null).length;
+      const rows = cards.map(c => `
+        <button onclick="goToCard('${c.id}')" class="w-full flex items-center gap-3 py-2 text-left border-t border-slate-800/70 hover:bg-slate-800/50 rounded-lg px-1">
+          ${thumb(c)}
+          <span class="min-w-0 flex-1">
+            <span class="block text-xs font-semibold text-slate-100 truncate">${shopScope === 'all' ? `<span class="text-sky-300">${SETS[c._set].label}</span> • ` : ''}${esc(c.name)}</span>
+            <span class="block text-[11px] font-mono text-slate-400 truncate">${esc(c.number)} • ${esc(c.finish)}</span>
+            <span class="block text-[10px] text-slate-500">Page ${c.page} • Row ${c.row}</span>
+          </span>
+          <span class="shrink-0 font-mono text-sm font-bold ${c.price != null ? 'text-amber-300' : 'text-slate-600 text-[11px] font-normal'}">${c.price != null ? money(c.price) : 'no sales'}</span>
+        </button>`).join('');
+      openSheet('Shopping list', `
+        <div class="flex flex-wrap gap-1.5">${chip(shopScope === 'current', "shopScope='current';openShopping()", SET.label)}${chip(shopScope === 'all', "shopScope='all';openShopping()", 'All 3 binders')}</div>
+        <div class="flex flex-wrap gap-1.5 mt-1.5">${chip(shopMax === 0, 'shopMax=0;openShopping()', 'Any price')}${chip(shopMax === 1, 'shopMax=1;openShopping()', 'Under $1')}${chip(shopMax === 5, 'shopMax=5;openShopping()', 'Under $5')}${chip(shopFirst, 'shopFirst=!shopFirst;openShopping()', shopFirst ? '1st Eds included' : '+ 1st Eds')}</div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div class="rounded-xl bg-slate-950 border border-slate-800 p-2.5"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Cards needed</div><div class="text-lg font-bold text-white font-mono">${allNeeded.length}</div></div>
+          <div class="rounded-xl bg-slate-950 border border-slate-800 p-2.5"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Cost to finish</div><div class="text-lg font-bold text-amber-300 font-mono">${money(sumPrice(allNeeded))}</div></div>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-1.5">${unpriced ? `${unpriced} card${unpriced > 1 ? 's have' : ' has'} no recent sales and ${unpriced > 1 ? 'are' : 'is'} not in the total. ` : ''}Near Mint prices as of ${PRICE_AS_OF}.</p>
+        <div class="mt-3">${rows || `<p class="text-xs text-slate-400 py-6 text-center">Nothing needed at this price. Try a higher limit.</p>`}</div>`);
+    }
+
+    // ---------- 3. Collection value ----------
+    function openValue() {
+      let allOwnedVal = 0, allLeft = 0, allCoreOwned = 0, allCore = 0;
+      const blocks = SET_ORDER.map(k => {
+        const st = SETS[k], real = st.data.filter(c => !c.isOpen);
+        const core = real.filter(c => c.page <= st.corePages), first = real.filter(c => c.page === st.firstPage);
+        const owned = real.filter(c => c.owned), ownedVal = sumPrice(owned);
+        const leftCore = sumPrice(core.filter(c => !c.owned)), leftFirst = sumPrice(first.filter(c => !c.owned));
+        const coreOwned = core.filter(c => c.owned).length, pct = Math.round(coreOwned / core.length * 100);
+        const top = owned.filter(c => c.price != null).sort((a, b) => b.price - a.price)[0];
+        allOwnedVal += ownedVal; allLeft += leftCore; allCoreOwned += coreOwned; allCore += core.length;
+        return `
+          <div class="rounded-2xl bg-slate-950 border ${k === SET.key ? 'border-amber-500/40' : 'border-slate-800'} p-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-bold text-white font-heading">${st.label} <span class="text-[10px] font-mono text-slate-500 ml-1">${st.dex}</span></span>
+              <span class="text-[11px] font-mono text-emerald-400">${coreOwned}/${core.length} core</span>
+            </div>
+            <div class="mt-1.5 h-1.5 rounded-full bg-slate-800 overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${pct}%"></div></div>
+            <div class="grid grid-cols-3 gap-2 mt-2.5 text-center">
+              <div><div class="text-[10px] text-slate-500">You own</div><div class="font-mono font-bold text-emerald-400">${money(ownedVal)}</div></div>
+              <div><div class="text-[10px] text-slate-500">To finish core</div><div class="font-mono font-bold text-amber-300">${money(leftCore)}</div></div>
+              <div><div class="text-[10px] text-slate-500">1st Eds left</div><div class="font-mono font-bold text-slate-300">${money(leftFirst)}</div></div>
+            </div>
+            ${top ? `<p class="mt-2 text-[11px] text-slate-500">Most valuable owned: <button onclick="goToCard('${top.id}')" class="text-slate-300 underline decoration-slate-600">${esc(top.name)} ${esc(top.number)}</button> (${money(top.price)})</p>` : ''}
+          </div>`;
+      }).join('');
+      const pct = Math.round(allCoreOwned / allCore * 100);
+      openSheet('Collection value', `
+        <div class="rounded-2xl p-3.5 border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900">
+          <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Whole evolution line</div>
+          <div class="flex items-end justify-between gap-2 mt-1">
+            <div><div class="text-2xl font-bold text-white font-mono">${money(allOwnedVal)}</div><div class="text-[11px] text-slate-400">value of cards you own</div></div>
+            <div class="text-right"><div class="text-lg font-bold text-amber-300 font-mono">${money(allLeft)}</div><div class="text-[11px] text-slate-400">to finish all 3 cores</div></div>
+          </div>
+          <div class="mt-2.5 h-2 rounded-full bg-slate-950/70 overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${pct}%"></div></div>
+          <div class="text-[11px] text-slate-400 mt-1">${allCoreOwned} of ${allCore} core cards (${pct}%)</div>
+        </div>
+        <div class="space-y-2.5 mt-3">${blocks}</div>
+        <p class="text-[11px] text-slate-500 mt-3">Based on the Near Mint price snapshot from ${PRICE_AS_OF}. Cards with no recent sales count as $0.</p>`);
+    }
+
+    // ---------- 5. Compare ----------
+    let compareFrom = null;
+    function startCompare(fromMenu) {
+      const a = !fromMenu && selectedCardId ? selectedCardId : null;
+      if (fromMenu) { compareFrom = '__pick_first__'; }
+      else if (a) { compareFrom = a; closeModal(); }
+      const name = compareFrom === '__pick_first__' ? 'a second card (pick the first one now)' : (findAny(compareFrom)?.name || '');
+      document.getElementById('compare-banner-name').innerText = compareFrom === '__pick_first__' ? 'another card' : name;
+      if (compareFrom === '__pick_first__') document.querySelector('#compare-banner p').innerHTML = 'Tap or search the <span class="font-semibold text-amber-300">first card</span> to compare';
+      else document.querySelector('#compare-banner p').innerHTML = `Tap or search a card to compare with <span id="compare-banner-name" class="font-semibold text-amber-300">${esc(name)}</span>`;
+      document.getElementById('compare-banner').classList.remove('hidden');
+    }
+    function cancelCompare() {
+      compareFrom = null;
+      document.getElementById('compare-banner').classList.add('hidden');
+    }
+    function showCompare(idA, idB) {
+      cancelCompare();
+      const A = findAny(idA), B = findAny(idB);
+      if (!A || !B) return;
+      const side = c => `
+        <div class="min-w-0 flex flex-col items-center text-center">
+          <div class="w-full aspect-[63/88] rounded-xl border border-slate-700 bg-slate-950 overflow-hidden flex items-center justify-center relative">${artHtml({ ...c, owned: true }, true)}</div>
+          <div class="mt-2 text-[10px] font-semibold ${c._set === SET.key ? 'text-amber-300' : 'text-sky-300'}">${SETS[c._set].label}</div>
+          <div class="text-xs font-bold text-white leading-tight">${esc(c.name)}</div>
+          <div class="text-[11px] font-mono text-slate-400">${esc(c.number)}</div>
+        </div>`;
+      const row = (label, a, b) => `<div class="grid grid-cols-[1fr_auto_1fr] gap-2 items-center py-1.5 border-t border-slate-800/70 text-xs">
+          <span class="text-right text-slate-200 ${a !== b ? 'font-semibold' : ''}">${a}</span>
+          <span class="text-[10px] uppercase tracking-wider text-slate-500 text-center w-16">${label}</span>
+          <span class="text-left text-slate-200 ${a !== b ? 'font-semibold' : ''}">${b}</span></div>`;
+      const pr = c => c.price != null ? money(c.price) : 'no sales';
+      const own = c => c.owned ? '<span class="text-emerald-400">Have</span>' : '<span class="text-amber-400">Need</span>';
+      openSheet('Compare', `
+        <div class="grid grid-cols-2 gap-3">${side(A)}${side(B)}</div>
+        <div class="mt-3">
+          ${row('Finish', esc(A.finish), esc(B.finish))}
+          ${row('Price', pr(A), pr(B))}
+          ${row('Status', own(A), own(B))}
+          ${row('Era', esc(A.era), esc(B.era))}
+          ${row('Binder', `P${A.page} R${A.row}`, `P${B.page} R${B.row}`)}
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-3">
+          <button onclick="goToCard('${A.id}')" class="py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold">Open left card</button>
+          <button onclick="goToCard('${B.id}')" class="py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold">Open right card</button>
+        </div>
+        <button onclick="closeSheet();compareFrom='${A.id}';startCompareKeep()" class="mt-2 w-full py-2 rounded-xl border border-slate-700 hover:border-amber-500/60 text-amber-300 text-xs font-semibold">Swap the right card</button>`);
+    }
+    function startCompareKeep() {
+      document.querySelector('#compare-banner p').innerHTML = `Tap or search a card to compare with <span id="compare-banner-name" class="font-semibold text-amber-300">${esc(findAny(compareFrom)?.name || '')}</span>`;
+      document.getElementById('compare-banner').classList.remove('hidden');
+    }
+    function renderQuickCompare(card) {
+      const box = document.getElementById('modal-compare-quick');
+      const mates = SETS[card._set].data.filter(c => c.page === card.page && c.row === card.row && c.id !== card.id && !c.isOpen);
+      box.innerHTML = mates.length ? `<div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold text-left mb-1">Compare with this row</div>
+        <div class="flex flex-wrap gap-1.5">${mates.map(m => `<button onclick="closeModal();showCompare('${card.id}','${m.id}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium border border-slate-700">${esc(m.finish)}</button>`).join('')}</div>` : '';
+    }
+
+    // ---------- 6. Swipe pages ----------
+    let swipeMode = false;
+    try { swipeMode = localStorage.getItem('slakoth-line-swipe') === '1'; } catch (e) {}
+    function toggleSwipe() {
+      swipeMode = !swipeMode;
+      try { localStorage.setItem('slakoth-line-swipe', swipeMode ? '1' : '0'); } catch (e) {}
+      toggleToolsMenu(false);
+      applySwipe();
+    }
+    function applySwipe() {
+      const box = document.getElementById('binder-container');
+      box.classList.toggle('swipe-mode', swipeMode);
+      document.getElementById('swipe-pager').classList.toggle('hidden', !swipeMode);
+      if (swipeMode) { box.scrollLeft = 0; updateSwipeLabel(); }
+    }
+    function swipePages() { return [...document.querySelectorAll('#binder-container > .binder-page')]; }
+    function swipeIndex() {
+      const box = document.getElementById('binder-container');
+      return box.clientWidth ? Math.round(box.scrollLeft / (box.clientWidth + 16)) : 0;
+    }
+    function updateSwipeLabel() {
+      const pages = swipePages(); if (!pages.length) return;
+      const i = Math.min(swipeIndex(), pages.length - 1);
+      document.getElementById('swipe-label').innerText = `${pages[i].id.replace('page-', 'Page ')} of ${setStats(SET).pages}`;
+    }
+    function swipeBy(d) {
+      const pages = swipePages(); if (!pages.length) return;
+      const i = Math.max(0, Math.min(pages.length - 1, swipeIndex() + d));
+      pages[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+
+    // ---------- Offline (when the viewer is hosted as a website) ----------
+    const CAN_OFFLINE = 'serviceWorker' in navigator && 'caches' in window && /^https?:$/.test(location.protocol);
+    if (CAN_OFFLINE) navigator.serviceWorker.register('sw.js').catch(() => {});
+    function allImageUrls() {
+      return [...new Set(SET_ORDER.flatMap(k => SETS[k].data.map(c => c.img)).filter(Boolean))];
+    }
+    async function openOffline() {
+      const urls = allImageUrls();
+      let have = 0;
+      try { const cache = await caches.open('slk-line-media'); for (const u of urls) if (await cache.match(u, { ignoreVary: true })) have++; } catch (e) {}
+      openSheet('Offline for card shows', `
+        <p class="text-slate-400 text-xs leading-relaxed">The binders, prices and your checkmarks already work offline once the app has opened. Card images are saved as you view them. Save them all now so every card shows up without signal.</p>
+        <div class="mt-3 rounded-xl bg-slate-950 border border-slate-800 p-3">
+          <div class="flex items-center justify-between text-xs"><span class="text-slate-400">Card images saved</span><span id="offline-count" class="font-mono font-bold text-emerald-400">${have} / ${urls.length}</span></div>
+          <div class="mt-2 h-1.5 rounded-full bg-slate-800 overflow-hidden"><div id="offline-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-400" style="width:${Math.round(have / urls.length * 100)}%"></div></div>
+        </div>
+        <button id="offline-go" onclick="saveAllImages()" class="mt-3 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-sm font-semibold">${have >= urls.length ? 'Check again' : 'Save all card images'}</button>
+        <p class="text-[11px] text-slate-500 mt-2">Use Wi-Fi: the high-res images add up. Some may not save if a site blocks it; those cards show the "Look it up" link instead.</p>`);
+    }
+    async function saveAllImages() {
+      const urls = allImageUrls(), btn = document.getElementById('offline-go');
+      btn.disabled = true; btn.innerText = 'Saving...';
+      let done = 0, failed = 0;
+      const cache = await caches.open('slk-line-media');
+      const queue = urls.slice();
+      const worker = async () => {
+        while (queue.length) {
+          const u = queue.shift();
+          try {
+            if (!(await cache.match(u, { ignoreVary: true }))) { const res = await fetch(u, { mode: 'no-cors' }); await cache.put(u, res); }
+            done++;
+          } catch (e) { failed++; }
+          const el = document.getElementById('offline-count'), bar = document.getElementById('offline-bar');
+          if (el) el.innerText = `${done} / ${urls.length}`;
+          if (bar) bar.style.width = `${Math.round(done / urls.length * 100)}%`;
+        }
+      };
+      await Promise.all([worker(), worker(), worker(), worker()]);
+      btn.disabled = false;
+      btn.innerText = failed ? `Saved ${done}. ${failed} failed, try again on better signal` : 'All card images saved';
+    }
+
+    // Initialize App
+    document.addEventListener('DOMContentLoaded', () => {
+      loadOwned();
+      let start = 'slakoth';
+      try { start = localStorage.getItem('slakoth-line-current-set') || 'slakoth'; } catch (e) {}
+      if (SETS[start]) { SET = SETS[start]; binderData = SET.data; }
+      applySetChrome();
+      applyTheme();
+      renderBinder();
+      applySwipe();
+      document.getElementById('binder-container').addEventListener('scroll', () => { if (swipeMode) updateSwipeLabel(); }, { passive: true });
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (!document.getElementById('show-mode').classList.contains('hidden')) closeShowMode();
+        else if (!document.getElementById('sheet').classList.contains('hidden')) closeSheet();
+        else if (compareFrom) cancelCompare();
+        toggleToolsMenu(false); toggleSetMenu(false);
+      });
+      updateProgress();
+      lucide.createIcons();
+    });
+
+    // Render Binder Pages
+    function renderBinder() {
+      const container = document.getElementById('binder-container');
+      container.innerHTML = '';
+      if (swipeMode) { container.scrollLeft = 0; setTimeout(updateSwipeLabel, 0); }
+
+      for (let p = 1; p <= setStats(SET).pages; p++) {
+        const pageCards = binderData.filter(c => c.page === p);
+        if (pageCards.length === 0) continue;
+        if (!pageCards.some(c => isVisible(c) && !c.isOpen) && currentFilter !== 'all' && currentFilter !== 'core' && currentFilter !== '1st') continue;
+
+        if (currentFilter === 'core' && p > SET.corePages) continue;
+        if (currentFilter === '1st' && p !== SET.firstPage) continue;
+
+        const is1stEdPage = p === SET.firstPage;
+
+        const pageEl = document.createElement('div');
+        pageEl.id = `page-${p}`;
+        pageEl.className = `binder-page bg-slate-900/80 border ${is1stEdPage ? 'border-amber-500/40' : 'border-slate-800'} rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-2xl relative overflow-hidden`;
+
+        pageEl.innerHTML = `
+          <!-- Page Header Banner -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6 border-b border-slate-800 gap-2">
+            <div class="flex items-center space-x-2.5">
+              <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${is1stEdPage ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center font-bold text-xs sm:text-sm font-mono shrink-0">
+                P${p}
+              </span>
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-1.5 leading-tight">
+                  ${is1stEdPage ? `Page ${p}: Optional Japanese 1st Editions` : `Binder Page Side #${p}`}
+                  ${is1stEdPage ? '<span class="px-1.5 py-0.5 text-[10px] rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">7 Stamps</span>' : ''}
+                </h3>
+                <p class="text-[11px] sm:text-xs text-slate-400">
+                  ${is1stEdPage ? 'Pre-Sept 2016 Japanese 1st Edition prints.' : `3x3 Grid • Sheet ${Math.ceil(p/2)} ${p % 2 === 1 ? '(Front)' : '(Back)'}`}
+                </p>
+              </div>
+            </div>
+            
+            <div class="hidden sm:flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-400">
+              <span class="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">Col 1: Normal</span>
+              <span class="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">Col 2: RH</span>
+              <span class="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">Col 3: JP</span>
+            </div>
+          </div>
+
+          <!-- 9-Pocket Grid (Responsive 1-col on mobile -> 3-col on desktop) -->
+          <div class="grid grid-cols-3 gap-2 sm:gap-4 max-w-5xl mx-auto">
+            ${pageCards.map(card => renderCardSlot(card)).join('')}
+          </div>
+        `;
+
+        container.appendChild(pageEl);
+      }
+      lucide.createIcons();
+    }
+
+    // Single Pocket Template
+    function renderCardSlot(card) {
+      if (!isVisible(card)) return '<div class="invisible" aria-hidden="true"></div>';
+
+      if (card.isOpen) {
+        return `
+          <div class="pocket pocket-empty relative bg-slate-950/40 border border-dashed border-slate-800 rounded-xl sm:rounded-2xl p-3 flex flex-col items-center justify-center text-center min-h-[150px] sm:min-h-[220px] transition hover:border-slate-700">
+            <div class="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600 mb-1.5">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            </div>
+            <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">${card.name}</span>
+            <span class="hidden sm:block text-[10px] text-slate-600 mt-0.5">${card.notes}</span>
+          </div>
+        `;
+      }
+
+      const isRH = /Reverse Holo|Illustration|Holo|Full Art|Ultra Rare|Double Rare|SR|RR/.test(card.finish);
+      const is1st = card.is1stEd;
+
+      return `
+        <div onclick="openModal('${card.id}')" class="pocket ${card.owned ? 'pocket-owned' : ''} ${rowComplete(card) ? 'pocket-complete' : ''} group relative bg-slate-950/80 border ${card.owned ? 'border-emerald-500/40 hover:border-emerald-400' : 'border-slate-800 hover:border-slate-600'} ${isRH ? 'foil-effect' : ''} rounded-xl sm:rounded-2xl p-1.5 sm:p-3 flex flex-col justify-between min-h-[180px] sm:min-h-[240px] min-w-0 cursor-pointer transition-all duration-300 shadow-md hover:shadow-xl active:scale-[0.98]">
+          
+          <!-- Top Row: Column Position & Ownership Badge -->
+          <div class="flex items-center justify-between text-[10px] sm:text-[11px] mb-1.5">
+            <span class="hidden sm:inline px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 font-mono text-[9px] sm:text-[10px] border border-slate-800">
+              ${card.colLabel.split(' ')[0]}
+            </span>
+            ${card.owned ? `
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold flex items-center gap-1 text-[9px] sm:text-[10px]">
+                <i data-lucide="check" class="w-3 h-3"></i> HAVE
+              </span>
+            ` : `
+              <span class="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/80 border border-amber-500/20 font-medium flex items-center gap-1 text-[9px] sm:text-[10px]">
+                <i data-lucide="circle-dashed" class="w-3 h-3"></i> NEEDED
+              </span>
+            `}
+          </div>
+
+          <!-- Card Artwork Container -->
+          <div class="my-1 sm:my-2 relative w-full h-28 sm:h-32 rounded-lg bg-slate-900 overflow-hidden flex items-center justify-center border border-slate-800/80 group-hover:border-slate-700">
+            ${artHtml(card, false)}
+            ${rowComplete(card) && isRowLead(card) ? `<div class="complete-chip absolute top-1 left-1 z-[3] font-extrabold text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded shadow flex items-center gap-0.5" title="You own every version of this card"><i data-lucide="star" class="w-2.5 h-2.5"></i> Complete</div>` : ''}
+
+            ${is1st ? `
+              <div class="absolute top-1 left-1 bg-amber-500 text-slate-950 font-extrabold text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded shadow">
+                1st ED
+              </div>
+            ` : ''}
+
+            <div class="absolute bottom-1 right-1 max-w-[90%] truncate bg-slate-950/80 backdrop-blur-sm text-slate-300 text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded border border-slate-800">
+              ${card.finish}
+            </div>
+          </div>
+
+          <!-- Card Info Footer -->
+          <div class="mt-1 pt-1.5 border-t border-slate-900 flex flex-col">
+            <span class="text-xs font-bold text-slate-200 truncate group-hover:text-amber-400 transition">${card.name}</span>
+            <div class="flex justify-between items-center gap-1 text-[10px] text-slate-400 mt-0.5">
+              <span class="font-mono text-slate-400 truncate min-w-0">${card.number}</span>
+              ${card.price != null
+                ? `<span class="font-mono font-bold text-amber-300 tabular-nums shrink-0">${fmtPrice(card.price)}</span>`
+                : `<span class="text-slate-600 shrink-0">no sales</span>`}
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // Filter Switcher
+    function setFilter(type) {
+      currentFilter = type;
+      
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.className = "filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 transition shrink-0";
+      });
+
+      const activeBtn = document.getElementById(`filter-${type}`);
+      if (activeBtn) {
+        activeBtn.className = "filter-btn px-2.5 py-1 rounded-lg font-medium whitespace-nowrap bg-amber-500 text-slate-950 shadow transition shrink-0";
+      }
+
+      renderBinder();
+    }
+
+    // Card Search
+    function cardText(c) {
+      return `${SETS[c._set].label} ${c.name} ${c.number} ${c.finish} ${c.era}`.toLowerCase();
+    }
+    function findCards(q) {
+      let text = q.toLowerCase().replace(/#/g, '');
+      let page = null;
+      const pm = text.match(/\b(?:page|p)\s*(\d)\b/);
+      if (pm) { page = +pm[1]; text = text.replace(pm[0], ' '); }
+      const terms = text.split(/\s+/).filter(Boolean);
+      if (!terms.length && page === null) return [];
+      const pool = SET_ORDER.flatMap(k => SETS[k].data);
+      const hits = pool.filter(c => !c.isOpen && (page === null || c.page === page) && terms.every(t => cardText(c).includes(t)));
+      const phrase = text.trim().replace(/\s+/g, ' ');
+      const score = c => (c.name.toLowerCase().includes(phrase) ? 2 : 0) + (c._set === SET.key ? 1 : 0);
+      return hits.sort((a, b) => score(b) - score(a));
+    }
+    let searchHits = [];
+    function onSearch(q) {
+      const box = document.getElementById('search-results');
+      document.getElementById('search-clear').classList.toggle('hidden', !q);
+      if (!q.trim()) { box.classList.add('hidden'); box.innerHTML = ''; searchHits = []; return; }
+      searchHits = findCards(q);
+      if (!searchHits.length) {
+        box.innerHTML = `<div class="p-3 text-xs text-slate-400">No cards match "${q.replace(/[<>&"]/g, '')}". Try a set name or just the first number, like 81.</div>`;
+      } else {
+        box.innerHTML = `<div class="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider text-slate-500 font-semibold">${searchHits.length} card${searchHits.length > 1 ? 's' : ''}</div>` +
+          searchHits.map(c => `
+          <button onclick="pickSearchResult('${c.id}')" class="w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-slate-800 focus:bg-slate-800 outline-none border-t border-slate-800/70">
+            <div class="w-9 h-12 shrink-0 rounded bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+              ${c.img ? `<img src="${c.img}" alt="" loading="lazy" class="w-full h-full object-contain" onerror="this.hidden=true">` : ''}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="text-xs font-semibold text-slate-100 truncate"><span class="${c._set === SET.key ? 'text-amber-300' : 'text-sky-300'}">${SETS[c._set].label}</span> • ${c.name}</div>
+              <div class="text-[11px] text-slate-400 font-mono truncate">${c.number} • ${c.finish}</div>
+              <div class="text-[10px] text-slate-500">Page ${c.page} • Row ${c.row} • ${c.colLabel.split(' ')[0]}${c.price != null ? ` • <span class="text-amber-300 font-mono">${fmtPrice(c.price)}</span>` : ''}</div>
+            </div>
+            <span class="shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${c.owned ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/10 text-amber-400/80'}">${c.owned ? 'HAVE' : 'NEED'}</span>
+          </button>`).join('');
+      }
+      box.classList.remove('hidden');
+    }
+    function onSearchKey(e) {
+      if (e.key === 'Enter' && searchHits.length) { e.preventDefault(); pickSearchResult(searchHits[0].id); }
+      if (e.key === 'Escape') { document.getElementById('search-results').classList.add('hidden'); e.target.blur(); }
+    }
+    function pickSearchResult(id) {
+      document.getElementById('search-results').classList.add('hidden');
+      document.getElementById('card-search').blur();
+      const owner = SET_ORDER.find(k => SETS[k].data.some(c => c.id === id));
+      if (!owner) return;
+      if (owner !== SET.key) switchSet(owner, true);
+      const card = binderData.find(c => c.id === id);
+      if (!card) return;
+      if (!isVisible(card) || (currentFilter === 'core' && card.page > SET.corePages) || (currentFilter === '1st' && card.page !== SET.firstPage)) setFilter('all');
+      openModal(id);
+    }
+    function clearSearch() {
+      const input = document.getElementById('card-search');
+      input.value = '';
+      onSearch('');
+      input.focus();
+    }
+    document.addEventListener('click', e => {
+      if (!document.getElementById('search-wrap').contains(e.target)) document.getElementById('search-results').classList.add('hidden');
+      if (!document.getElementById('set-switch-wrap').contains(e.target)) toggleSetMenu(false);
+      if (!document.getElementById('tools-wrap').contains(e.target)) toggleToolsMenu(false);
+    });
+
+    // Scroll Handler
+    function scrollToPage(pageNum) {
+      const target = document.getElementById(`page-${pageNum}`);
+      if (target) {
+        target.scrollIntoView(swipeMode ? { behavior: 'smooth', block: 'nearest', inline: 'start' } : { behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Modal Details Inspector
+    function openModal(cardId) {
+      const card = binderData.find(c => c.id === cardId);
+      if (!card || card.isOpen) return;
+      if (compareFrom === '__pick_first__') { compareFrom = cardId; startCompareKeep(); return; }
+      if (compareFrom && compareFrom !== cardId) { showCompare(compareFrom, cardId); return; }
+
+      selectedCardId = cardId;
+
+      document.getElementById('modal-title').innerText = card.name;
+      document.getElementById('modal-subtitle').innerText = `${card.number} • ${card.era}`;
+      document.getElementById('modal-finish').innerText = card.finish;
+      document.getElementById('modal-price').innerText = card.price != null ? '$' + card.price.toFixed(2) : 'No recent sales';
+      document.getElementById('modal-price-src').innerText = card.price != null ? `${card.priceSrc} • as of ${PRICE_AS_OF}` : `No sale found as of ${PRICE_AS_OF}. Check the links below.`;
+      const q = encodeURIComponent(lookupQuery(card));
+      document.getElementById('modal-ebay').href = `https://www.ebay.com/sch/i.html?_nkw=${q}&LH_Sold=1&LH_Complete=1`;
+      document.getElementById('modal-tcgp').href = `https://www.tcgplayer.com/search/all/product?q=${q}`;
+      document.getElementById('modal-position').innerText = `Page ${card.page} • Row ${card.row} • ${card.colLabel}`;
+      document.getElementById('modal-era').innerText = card.era;
+      document.getElementById('modal-notes').innerText = card.artNote ? `${card.notes}\n\nImage: ${card.artNote}` : card.notes;
+
+      document.getElementById('modal-card-wrapper').innerHTML = artHtml(card, true);
+      renderQuickCompare(card);
+
+      const statusEl = document.getElementById('modal-status');
+      if (card.owned) {
+        statusEl.className = "mt-2.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1.5";
+        statusEl.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Owned (In Binder)`;
+      } else {
+        statusEl.className = "mt-2.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center gap-1.5";
+        statusEl.innerHTML = `<i data-lucide="circle-dashed" class="w-4 h-4"></i> Missing / Needed`;
+      }
+
+      document.getElementById('card-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('card-modal').classList.add('hidden');
+      selectedCardId = null;
+    }
+
+    // Toggle Card Status
+    function toggleCurrentCardOwned() {
+      if (!selectedCardId) return;
+      const card = binderData.find(c => c.id === selectedCardId);
+      if (card) {
+        const before = { row: rowComplete(card), page: pageComplete(SET, card.page), core: coreComplete(SET) };
+        card.owned = !card.owned;
+        checkMilestones(card, before);
+        saveOwned();
+        updateProgress();
+        renderBinder();
+        openModal(selectedCardId);
+      }
+    }
+
+    // Progress Tracker Calculation
+    function updateProgress() {
+      const coreCards = binderData.filter(c => c.page <= SET.corePages && !c.isOpen);
+      const ownedCore = coreCards.filter(c => c.owned).length;
+      const totalCore = coreCards.length;
+      const percentage = Math.round((ownedCore / totalCore) * 100);
+
+      document.getElementById('core-owned-count').innerText = ownedCore;
+      document.getElementById('core-percent').innerText = percentage;
+      document.getElementById('core-progress-bar').style.width = `${percentage}%`;
+      const real = binderData.filter(c => !c.isOpen);
+      document.getElementById('count-owned').innerText = real.filter(c => c.owned).length;
+      document.getElementById('count-needed').innerText = real.filter(c => !c.owned).length;
+    }
+  </script>
+</body>
+</html>
