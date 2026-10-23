@@ -149,6 +149,33 @@
     @keyframes burst { to { transform: translate(var(--dx), var(--dy)) rotate(220deg); opacity: 0; } }
     @media (prefers-reduced-motion: reduce) { .burst { display: none; } #celebrate { transition: none; } }
 
+    /* Printable placeholders: real card size, paper colors in preview and print */
+    #print-view { background: #e9ece6; }
+    .ph-sheet { width: 210mm; margin: 0 auto 10mm; background: #fff; padding: 8mm; box-shadow: 0 6px 30px rgb(0 0 0 / .25); }
+    .ph-grid { display: grid; grid-template-columns: repeat(3, 63mm); grid-auto-rows: 88mm; gap: 0; justify-content: center; }
+    .ph-card { position: relative; width: 63mm; height: 88mm; overflow: hidden; outline: .25mm dashed #9aa39b; outline-offset: -.125mm; background: #f4f5f2; color: #1d2621; font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .ph-card .ph-art { position: absolute; inset: 3mm 3mm 24mm; display: flex; align-items: center; justify-content: center; }
+    .ph-card .ph-art img { max-width: 100%; max-height: 100%; object-fit: contain; filter: grayscale(1) contrast(.85) brightness(1.08); opacity: .42; }
+    .ph-card .ph-noart { width: 100%; height: 100%; border-radius: 2mm; background: repeating-linear-gradient(135deg, #e3e6e1 0 2mm, #eef0ec 2mm 4mm); }
+    .ph-card .ph-stamp { position: absolute; top: 5mm; left: 50%; transform: translateX(-50%) rotate(-6deg); border: .5mm solid #b0663a; color: #b0663a; font: 800 3.4mm/1 'Bricolage Grotesque', sans-serif; letter-spacing: .4mm; padding: .8mm 2.2mm; border-radius: 1mm; background: rgb(255 255 255 / .75); text-transform: uppercase; }
+    .ph-card .ph-info { position: absolute; left: 3mm; right: 3mm; bottom: 3mm; height: 20mm; display: flex; flex-direction: column; justify-content: flex-end; gap: .6mm; }
+    .ph-card .ph-mon { font: 700 2.3mm/1 'Instrument Sans', sans-serif; letter-spacing: .35mm; text-transform: uppercase; color: #4f7a5f; }
+    .ph-card .ph-name { font: 800 3.5mm/1.1 'Bricolage Grotesque', sans-serif; color: #1d2621; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .ph-card .ph-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1mm; font: 600 2.7mm/1.1 'JetBrains Mono', monospace; color: #3a463f; }
+    .ph-card .ph-finish { font: 700 2.2mm/1 'Instrument Sans', sans-serif; padding: .7mm 1.4mm; border-radius: .8mm; background: #1d2621; color: #fff; white-space: nowrap; }
+    .ph-card .ph-pos { font: 500 2.2mm/1 'JetBrains Mono', monospace; color: #6c776f; }
+    .ph-card .ph-tag { position: absolute; top: 3mm; right: 3mm; font: 700 1.9mm/1 'Instrument Sans', sans-serif; padding: .6mm 1.2mm; border-radius: .8mm; background: #dfe6e0; color: #3a463f; }
+    @media print {
+      @page { size: letter; margin: 8mm; }
+      body > *:not(#print-view) { display: none !important; }
+      body { background: #fff !important; background-image: none !important; }
+      #print-view { position: static !important; inset: auto !important; overflow: visible !important; background: #fff !important; padding: 0 !important; }
+      #print-pages { zoom: 1 !important; padding: 0 !important; }
+      #print-view .no-print { display: none !important; }
+      .ph-sheet { box-shadow: none; margin: 0; padding: 0; width: auto; break-after: page; }
+      .ph-sheet:last-child { break-after: auto; }
+    }
+
     /* Keyboard focus stays visible everywhere */
     button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid rgb(var(--a400)); outline-offset: 2px; }
 
@@ -274,6 +301,9 @@
             placeholder="Search all 3 binders (145, Platinum, Slaking ex, p3)"
             class="flex-1 min-w-0 bg-transparent text-base sm:text-sm text-slate-100 placeholder:text-slate-500 outline-none [&::-webkit-search-cancel-button]:hidden"
             oninput="onSearch(this.value)" onkeydown="onSearchKey(event)" onfocus="onSearch(this.value)">
+          <button onclick="openScanner('search')" class="scan-btn text-amber-300 hover:text-amber-200 p-1 rounded-lg hover:bg-slate-800 shrink-0" aria-label="Scan a card number with the camera" title="Scan card number">
+            <i data-lucide="scan-line" class="w-4 h-4"></i>
+          </button>
           <button id="search-clear" onclick="clearSearch()" class="hidden text-slate-400 hover:text-white p-0.5 rounded focus-visible:ring-2 focus-visible:ring-amber-500" aria-label="Clear search">
             <i data-lucide="x" class="w-4 h-4"></i>
           </button>
@@ -360,7 +390,7 @@
 
       <div class="flex flex-col items-center text-center">
         <!-- Modal Card Artwork Preview -->
-        <div id="modal-card-wrapper" class="w-40 h-56 sm:w-48 sm:h-64 rounded-xl border-2 border-slate-700 overflow-hidden shadow-2xl mb-3 relative bg-slate-950 flex items-center justify-center">
+        <div id="modal-card-wrapper" onclick="openZoom()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openZoom()}" aria-label="Enlarge card image" title="Tap to enlarge" class="w-40 h-56 sm:w-48 sm:h-64 rounded-xl border-2 border-slate-700 overflow-hidden shadow-2xl mb-3 relative bg-slate-950 flex items-center justify-center cursor-zoom-in">
           <img id="modal-image" src="" alt="Card Artwork" class="w-full h-full object-contain">
         </div>
 
@@ -435,6 +465,59 @@
     </div>
   </div>
 
+  <!-- Printable placeholder preview -->
+  <div id="print-view" class="hidden fixed inset-0 z-[66] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Placeholder print preview">
+    <div class="no-print sticky top-0 z-10 bg-slate-900/95 backdrop-blur border-b border-slate-700" style="padding-top: env(safe-area-inset-top, 0px)">
+      <div class="max-w-4xl mx-auto flex items-center justify-between gap-3 py-2.5" style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">
+        <div class="min-w-0">
+          <div class="text-sm font-bold text-white font-heading">Placeholder preview</div>
+          <div id="print-summary" class="text-[11px] text-slate-400 truncate"></div>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button onclick="closePrintView()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-semibold">Close</button>
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-semibold">Print</button>
+        </div>
+      </div>
+    </div>
+    <p class="no-print max-w-4xl mx-auto text-[11px] text-slate-600 py-2" style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">Print at 100% scale (turn off "fit to page") so each placeholder comes out at real card size. Cut along the dashed lines.</p>
+    <div id="print-pages" class="pb-10" style="padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px))"></div>
+  </div>
+
+  <!-- Number scanner -->
+  <div id="scanner" class="hidden fixed inset-0 z-[70] bg-black" role="dialog" aria-modal="true" aria-label="Scan card number">
+    <canvas id="scan-view" class="absolute inset-0 w-full h-full" style="z-index: 0"></canvas>
+    <div id="scan-box" class="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-[78%] max-w-md h-16 sm:h-20 rounded-xl border-2 border-amber-400" style="z-index: 10; box-shadow: 0 0 0 9999px rgb(0 0 0 / .5)">
+      <span class="absolute -top-2.5 left-3 px-1.5 text-[10px] font-bold tracking-wider uppercase bg-black text-amber-300">Card number here</span>
+    </div>
+    <div class="absolute inset-x-0 top-0 flex items-center justify-between gap-3 px-4 pt-3" style="z-index: 20; transform: translateZ(0); padding-top: calc(0.75rem + env(safe-area-inset-top, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">
+      <div class="text-white">
+        <div class="text-sm font-bold font-heading">Scan card number</div>
+        <div class="text-[11px] text-white/70">Fill the box with the number, like 45/109</div>
+      </div>
+      <button onclick="closeScanner()" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold backdrop-blur">Close</button>
+    </div>
+    <div class="absolute inset-x-0 bottom-0 px-4 pb-4 flex flex-col items-center gap-3" style="z-index: 20; transform: translateZ(0); padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px))">
+      <p id="scan-status" class="text-center text-sm text-white bg-black/60 rounded-xl px-3 py-2 max-w-sm">Starting camera...</p>
+      <div class="flex gap-2">
+        <button onclick="typeInstead()" class="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-sm font-semibold backdrop-blur">Type it instead</button>
+        <button id="scan-now" onclick="scanOnce(true)" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-sm font-bold">Scan now</button>
+      </div>
+    </div>
+    <canvas id="scan-canvas" class="hidden"></canvas>
+  </div>
+
+  <!-- Enlarged card image -->
+  <div id="zoom-view" class="hidden fixed inset-0 z-[75] bg-slate-950/95 backdrop-blur-md flex items-center justify-center cursor-zoom-out" onclick="closeZoom()" role="dialog" aria-modal="true" aria-label="Enlarged card image"
+    style="padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px))">
+    <img id="zoom-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl" style="max-height: calc(100vh - 6rem)">
+    <div class="absolute inset-x-0 bottom-0 text-center pointer-events-none" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px))">
+      <span id="zoom-caption" class="inline-block text-xs text-slate-300 bg-slate-900/80 rounded-full px-3 py-1"></span>
+    </div>
+    <button onclick="closeZoom()" class="absolute text-white bg-slate-800/90 hover:bg-slate-700 p-2 rounded-full" style="top: calc(0.75rem + env(safe-area-inset-top, 0px)); right: calc(0.75rem + env(safe-area-inset-right, 0px))" aria-label="Close enlarged image">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+  </div>
+
   <!-- Celebration toast -->
   <div id="celebrate" class="hide fixed left-1/2 z-[70] w-[min(22rem,calc(100vw-2rem))]" style="top: calc(0.75rem + env(safe-area-inset-top, 0px))" role="status" aria-live="polite">
     <div class="relative overflow-visible rounded-2xl border border-amber-500/60 bg-slate-900 shadow-2xl px-4 py-3 flex items-center gap-3">
@@ -458,8 +541,13 @@
     </div>
     <div style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))">
       <label for="show-input" class="sr-only">Card number or set</label>
+      <div class="flex gap-2">
       <input id="show-input" type="search" inputmode="search" autocomplete="off" enterkeyhint="search" placeholder="e.g. 63/108 or Platinum"
-        oninput="renderShow(this.value)" class="w-full bg-slate-900 border-2 border-slate-700 focus:border-amber-500 outline-none rounded-2xl px-4 py-3 text-xl font-semibold text-white placeholder:text-slate-600">
+        oninput="renderShow(this.value)" class="flex-1 min-w-0 bg-slate-900 border-2 border-slate-700 focus:border-amber-500 outline-none rounded-2xl px-4 py-3 text-xl font-semibold text-white placeholder:text-slate-600">
+      <button onclick="openScanner('show')" class="scan-btn shrink-0 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 flex flex-col items-center justify-center gap-0.5" aria-label="Scan a card number with the camera">
+        <i data-lucide="scan-line" class="w-6 h-6"></i><span class="text-[10px] font-bold">Scan</span>
+      </button>
+      </div>
     </div>
     <div id="show-result" class="flex-1 overflow-y-auto pt-4 pb-6" style="padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px))"></div>
   </div>
@@ -2909,6 +2997,260 @@
         ${others ? `<div class="mt-5"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Other matches</div>${others}</div>` : ''}`;
       if (window.lucide) lucide.createIcons();
     }
+    // ---------- Printable placeholders ----------
+    let phScope = 'current', phWhich = 'needed', phFirst = false;
+    function placeholderCards() {
+      const sets = phScope === 'all' ? SET_ORDER.map(k => SETS[k]) : [SET];
+      return sets.flatMap(st => st.data
+        .filter(c => !c.isOpen && (phWhich === 'all' || !c.owned) && (phFirst || c.page !== st.firstPage))
+        .sort((a, b) => a.page - b.page || a.row - b.row || ['left', 'center', 'right'].indexOf(a.col) - ['left', 'center', 'right'].indexOf(b.col)));
+    }
+    function openPlaceholders() {
+      const n = placeholderCards().length, sheets = Math.ceil(n / 9);
+      const chip = (on, fn, label) => `<button onclick="${fn}" class="px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${on ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">${label}</button>`;
+      openSheet('Printable placeholders', `
+        <p class="text-slate-400 text-xs leading-relaxed">Card-size stand-ins for empty pockets, with grayed-out art and the exact binder spot. 9 per sheet with cut lines.</p>
+        <div class="mt-3 text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Binder</div>
+        <div class="flex flex-wrap gap-1.5 mt-1">${chip(phScope === 'current', "phScope='current';openPlaceholders()", SET.label)}${chip(phScope === 'all', "phScope='all';openPlaceholders()", 'All 3 binders')}</div>
+        <div class="mt-3 text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Which pockets</div>
+        <div class="flex flex-wrap gap-1.5 mt-1">${chip(phWhich === 'needed', "phWhich='needed';openPlaceholders()", 'Needed only')}${chip(phWhich === 'all', "phWhich='all';openPlaceholders()", 'Every pocket')}${chip(phFirst, 'phFirst=!phFirst;openPlaceholders()', phFirst ? '1st Eds included' : '+ 1st Eds')}</div>
+        <div class="mt-4 rounded-xl bg-slate-950 border border-slate-800 p-3 flex items-center justify-between">
+          <span class="text-xs text-slate-400">${n} placeholder${n === 1 ? '' : 's'}</span>
+          <span class="text-xs font-mono text-slate-200">${sheets} sheet${sheets === 1 ? '' : 's'} of paper</span>
+        </div>
+        <button onclick="openPrintView()" ${n ? '' : 'disabled'} class="mt-3 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:opacity-40 text-slate-950 text-sm font-semibold">Preview placeholders</button>`);
+    }
+    function placeholderHtml(c) {
+      const st = SETS[c._set];
+      const pos = `P${c.page} • R${c.row} • ${c.colLabel.split(' ')[0]}`;
+      const art = c.img ? `<img src="${c.img}" alt="" loading="eager" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph-noart'}))">` : `<div class="ph-noart"></div>`;
+      const tag = c.is1stEd ? '1st Ed' : (c.artNote && c.artNote.startsWith('Stand-in') ? 'Stand-in art' : '');
+      return `<div class="ph-card">
+          <div class="ph-art">${art}</div>
+          <div class="ph-stamp">${c.owned ? 'Placeholder' : 'Needed'}</div>
+          ${tag ? `<div class="ph-tag">${tag}</div>` : ''}
+          <div class="ph-info">
+            <div class="ph-mon">${st.label} ${st.dex}</div>
+            <div class="ph-name">${esc(c.name)}</div>
+            <div class="ph-row"><span>${esc(c.number.replace(/ (RH|1st)$/, ''))}</span><span class="ph-finish">${esc(c.finish)}</span></div>
+            <div class="ph-pos">${pos}</div>
+          </div>
+        </div>`;
+    }
+    function openPrintView() {
+      const cards = placeholderCards(), sheets = [];
+      for (let i = 0; i < cards.length; i += 9) sheets.push(cards.slice(i, i + 9));
+      document.getElementById('print-pages').innerHTML = sheets.map(sh => `<div class="ph-sheet"><div class="ph-grid">${sh.map(placeholderHtml).join('')}</div></div>`).join('');
+      document.getElementById('print-summary').innerText = `${cards.length} placeholders • ${sheets.length} sheet${sheets.length === 1 ? '' : 's'} • ${phScope === 'all' ? 'All 3 binders' : SET.label}`;
+      closeSheet();
+      const pv = document.getElementById('print-view');
+      pv.classList.remove('hidden'); pv.scrollTop = 0;
+      fitPrintPages();
+    }
+    // Sheets are a true 210 mm wide for printing; on screen, scale them down to the available width
+    function fitPrintPages() {
+      const box = document.getElementById('print-pages');
+      if (!box || document.getElementById('print-view').classList.contains('hidden')) return;
+      const sheet = box.querySelector('.ph-sheet'); if (!sheet) return;
+      box.style.zoom = 1;
+      const avail = box.clientWidth - 8, natural = sheet.scrollWidth || sheet.offsetWidth;
+      const z = natural > avail && natural > 0 ? avail / natural : 1;
+      box.style.zoom = z.toFixed(3);
+    }
+    window.addEventListener('resize', fitPrintPages);
+    function closePrintView() { document.getElementById('print-view').classList.add('hidden'); }
+
+    // ---------- Card number scanner (camera + text recognition) ----------
+    const TESSERACT_URL = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+    let scanTarget = 'search', scanStream = null, scanWorker = null, scanLoop = null, scanBusy = false, scanActive = false, lastRead = '';
+    // The camera feed plays in a video element that is never put on the page (so iPhone cannot open its own
+    // full-screen player); each frame is painted onto the scan-view canvas instead.
+    let scanVideo = null, scanRaf = 0;
+    function getScanVideo() {
+      if (!scanVideo) {
+        scanVideo = document.createElement('video');
+        scanVideo.setAttribute('playsinline', ''); scanVideo.setAttribute('webkit-playsinline', '');
+        scanVideo.setAttribute('muted', ''); scanVideo.muted = true; scanVideo.autoplay = true;
+      }
+      return scanVideo;
+    }
+    // Where the video sits inside the view when scaled to cover it (like object-fit: cover)
+    function coverRect(view, v) {
+      const scale = Math.max(view.width / v.videoWidth, view.height / v.videoHeight);
+      return { scale, offX: (view.width - v.videoWidth * scale) / 2, offY: (view.height - v.videoHeight * scale) / 2 };
+    }
+    // Auto-reconnect: if the picture stops changing (it can freeze right after the first camera
+    // approval), quietly reconnect the camera the same way opening the scanner does. No taps involved.
+    let lastFrameTime = -1, lastFrameAt = 0, reconnects = 0, reconnecting = false;
+    function checkFrozen(v) {
+      const now = performance.now();
+      if (v.currentTime !== lastFrameTime) { lastFrameTime = v.currentTime; lastFrameAt = now; return; }
+      if (reconnecting || now - lastFrameAt < 1500) return;
+      if (reconnects >= 2) { scanStatus('The camera seems frozen. Tap Close, then Scan again.'); return; }
+      reconnects++;
+      autoReconnect();
+    }
+    async function autoReconnect() {
+      reconnecting = true;
+      scanStatus('Waking up the camera...');
+      try {
+        if (scanStream) scanStream.getTracks().forEach(t => t.stop());
+        if (scanVideo) { scanVideo.pause(); scanVideo.srcObject = null; scanVideo = null; }
+        await new Promise(r => setTimeout(r, 250));
+        if (!scanActive) return;
+        scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+        if (!scanActive) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; return; }
+        const v = getScanVideo();
+        v.srcObject = scanStream;
+        v.onpause = () => { if (scanActive && scanStream) v.play().catch(() => {}); };
+        await v.play().catch(() => {});
+        scanStatus(scanWorker ? 'Hold steady with the number inside the box.' : 'Getting the scanner ready (first time takes a few seconds)...');
+      } catch (e) {
+        scanStatus('The camera could not restart. Tap Close, then Scan again.');
+      } finally {
+        lastFrameTime = -1; lastFrameAt = performance.now(); reconnecting = false;
+      }
+    }
+
+    function paintCamera() {
+      const v = scanVideo, cv = document.getElementById('scan-view');
+      if (!scanActive) return;
+      if (!v) { scanRaf = requestAnimationFrame(paintCamera); return; }
+      if (v.srcObject) checkFrozen(v);
+      if (v.videoWidth) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2), r = cv.getBoundingClientRect();
+        const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+        if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+        const c = coverRect({ width: w, height: h }, v);
+        const cx = cv.getContext('2d'); if (cx) cx.drawImage(v, c.offX, c.offY, v.videoWidth * c.scale, v.videoHeight * c.scale);
+      }
+      scanRaf = requestAnimationFrame(paintCamera);
+    }
+    function loadTesseract() {
+      if (window.Tesseract) return Promise.resolve();
+      return new Promise((res, rej) => {
+        const sc = document.createElement('script');
+        sc.src = TESSERACT_URL; sc.onload = res; sc.onerror = () => rej(new Error('lib'));
+        document.head.appendChild(sc);
+      });
+    }
+    const scanStatus = t => { document.getElementById('scan-status').innerText = t; };
+    async function openScanner(target) {
+      scanTarget = target;
+      document.getElementById('search-results').classList.add('hidden');
+      document.getElementById('scanner').classList.remove('hidden');
+      scanActive = true; lastRead = '';
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        scanStatus('This browser cannot use the camera here. Open the app from its web address (https), not as a downloaded file.');
+        return;
+      }
+      try {
+        scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+        const v = getScanVideo();
+        lastFrameTime = -1; lastFrameAt = performance.now(); reconnects = 0; reconnecting = false;
+        v.srcObject = scanStream;
+        v.onpause = () => { if (scanActive && scanStream) v.play().catch(() => {}); };
+        await v.play().catch(() => {});
+        cancelAnimationFrame(scanRaf); scanRaf = requestAnimationFrame(paintCamera);
+      } catch (e) {
+        scanStatus('Camera access was blocked. Allow the camera for this site in your browser settings, or tap "Type it instead".');
+        return;
+      }
+      try {
+        if (!scanWorker) {
+          scanStatus('Getting the scanner ready (first time takes a few seconds)...');
+          await loadTesseract();
+          scanWorker = await Tesseract.createWorker('eng');
+          await scanWorker.setParameters({ tessedit_char_whitelist: '0123456789/', tessedit_pageseg_mode: '7' });
+        }
+      } catch (e) {
+        scanStatus('The scanner could not load. Check your signal and try again, or tap "Type it instead".');
+        return;
+      }
+      if (!scanActive) return;
+      scanStatus('Hold steady with the number inside the box.');
+      clearInterval(scanLoop);
+      scanLoop = setInterval(() => scanOnce(false), 700);
+    }
+    function stopCamera() {
+      clearInterval(scanLoop); scanLoop = null;
+      cancelAnimationFrame(scanRaf); scanRaf = 0;
+      if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+      if (scanVideo) { scanVideo.pause(); scanVideo.srcObject = null; }
+      const cv = document.getElementById('scan-view'), cx = cv && cv.getContext && cv.getContext('2d'); if (cx) cx.clearRect(0, 0, cv.width, cv.height);
+    }
+    function closeScanner() {
+      scanActive = false; stopCamera();
+      document.getElementById('scanner').classList.add('hidden');
+    }
+    function typeInstead() {
+      closeScanner();
+      const input = document.getElementById(scanTarget === 'show' ? 'show-input' : 'card-search');
+      setTimeout(() => input.focus(), 50);
+    }
+    // Crop the guide box out of the video frame, enlarge it and make it black-on-white for the reader
+    function grabNumberStrip() {
+      const v = scanVideo, box = document.getElementById('scan-box'), cv = document.getElementById('scan-canvas');
+      if (!v || !v.videoWidth) return null;
+      const vr = document.getElementById('scan-view').getBoundingClientRect(), br = box.getBoundingClientRect();
+      const { scale, offX, offY } = coverRect(vr, v);
+      const sx = Math.max(0, (br.left - vr.left - offX) / scale), sy = Math.max(0, (br.top - vr.top - offY) / scale);
+      const sw = Math.min(v.videoWidth - sx, br.width / scale), sh = Math.min(v.videoHeight - sy, br.height / scale);
+      const up = Math.max(1, 140 / sh);
+      cv.width = Math.round(sw * up); cv.height = Math.round(sh * up);
+      const ctx = cv.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(v, sx, sy, sw, sh, 0, 0, cv.width, cv.height);
+      const img = ctx.getImageData(0, 0, cv.width, cv.height), d = img.data;
+      let sum = 0;
+      for (let i = 0; i < d.length; i += 4) { const g = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]; d[i] = g; sum += g; }
+      const mean = sum / (d.length / 4), invert = mean < 120;
+      for (let i = 0; i < d.length; i += 4) {
+        let g = invert ? 255 - d[i] : d[i];
+        g = g < (invert ? 255 - mean : mean) * 0.82 ? 0 : 255;
+        d[i] = d[i + 1] = d[i + 2] = g;
+      }
+      ctx.putImageData(img, 0, 0);
+      return cv;
+    }
+    function matchScanned(text) {
+      const m = text.replace(/\s+/g, '').match(/(\d{1,3})\/(\d{2,3})/);
+      if (!m) return null;
+      const a = parseInt(m[1], 10), b = parseInt(m[2], 10);
+      const hits = SET_ORDER.flatMap(k => SETS[k].data).filter(c => {
+        const n = (c.number || '').match(/(\d{1,3})\/(\d{2,3})/);
+        return !c.isOpen && n && parseInt(n[1], 10) === a && parseInt(n[2], 10) === b;
+      });
+      return { read: `${m[1]}/${m[2]}`, hits };
+    }
+    async function scanOnce(manual) {
+      if (!scanActive || !scanWorker || scanBusy) return;
+      const strip = grabNumberStrip(); if (!strip) return;
+      scanBusy = true;
+      try {
+        const { data } = await scanWorker.recognize(strip);
+        const res = matchScanned(data.text || '');
+        if (!scanActive) return;
+        if (res && res.hits.length) { finishScan(res); return; }
+        if (res) { lastRead = res.read; scanStatus(`Read ${res.read}, but that number is not in your binders. Try again or type it.`); }
+        else if (manual) scanStatus('Could not read a number. Move closer so the number fills the box, with good light.');
+      } catch (e) {
+        scanStatus('Something went wrong reading the camera. Tap "Scan now" to try again.');
+      } finally { scanBusy = false; }
+    }
+    function finishScan(res) {
+      closeScanner();
+      if (navigator.vibrate) { try { navigator.vibrate(40); } catch (e) {} }
+      const top = res.hits.find(c => c._set === SET.key) || res.hits[0];
+      const q = top.number.replace(/ (RH|1st|IR|AR|C)$/, '').split(' ')[0];
+      if (scanTarget === 'show') {
+        const input = document.getElementById('show-input');
+        input.value = q; renderShow(q, top.id);
+      } else {
+        const input = document.getElementById('card-search');
+        input.value = q; onSearch(q);
+      }
+    }
+
     // ---------- Tools menu ----------
     function toggleToolsMenu(force) {
       const menu = document.getElementById('tools-menu');
@@ -2919,6 +3261,7 @@
             <span class="min-w-0"><span class="block text-sm font-semibold text-slate-100">${label}</span><span class="block text-[11px] text-slate-500">${sub}</span></span></button>`;
         menu.innerHTML = item("openShowMode()", 'scan-search', 'Card show mode', 'Big HAVE or NEED check')
           + item("openShopping()", 'shopping-basket', 'Shopping list', 'Needed cards, cheapest first')
+          + item("openPlaceholders()", 'printer', 'Printable placeholders', 'Card-size stand-ins for empty pockets')
           + item("openValue()", 'gem', 'Collection value', 'What you own and what is left')
           + item("toggleToolsMenu(false);startCompare(true)", 'columns-2', 'Compare cards', 'Two cards side by side')
           + item("toggleSwipe()", swipeMode ? 'rows-3' : 'gallery-horizontal', swipeMode ? 'Scroll pages' : 'Swipe pages', swipeMode ? 'Back to one long scroll' : 'One binder page at a time')
@@ -3236,7 +3579,10 @@
       document.getElementById('binder-container').addEventListener('scroll', () => { if (swipeMode) updateSwipeLabel(); }, { passive: true });
       document.addEventListener('keydown', e => {
         if (e.key !== 'Escape') return;
-        if (!document.getElementById('show-mode').classList.contains('hidden')) closeShowMode();
+        if (!document.getElementById('zoom-view').classList.contains('hidden')) closeZoom();
+        else if (!document.getElementById('scanner').classList.contains('hidden')) closeScanner();
+        else if (!document.getElementById('print-view').classList.contains('hidden')) closePrintView();
+        else if (!document.getElementById('show-mode').classList.contains('hidden')) closeShowMode();
         else if (!document.getElementById('sheet').classList.contains('hidden')) closeSheet();
         else if (compareFrom) cancelCompare();
         toggleToolsMenu(false); toggleSetMenu(false);
@@ -3499,6 +3845,19 @@
       document.getElementById('card-modal').classList.remove('hidden');
       lucide.createIcons();
     }
+
+    // Enlarged card image (from the card view)
+    function openZoom() {
+      const card = binderData.find(c => c.id === selectedCardId) || null;
+      const shown = document.querySelector('#modal-card-wrapper img');
+      if (!card || !card.img || !shown || shown.hidden) return;
+      const img = document.getElementById('zoom-img');
+      img.src = card.img; img.alt = `${card.name} ${card.number}`;
+      document.getElementById('zoom-caption').innerText = `${card.name} • ${card.number}${card.artNote && card.artNote.startsWith('Stand-in') ? ' • stand-in art' : ''}`;
+      document.getElementById('zoom-view').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+    function closeZoom() { document.getElementById('zoom-view').classList.add('hidden'); }
 
     function closeModal() {
       document.getElementById('card-modal').classList.add('hidden');
